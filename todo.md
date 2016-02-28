@@ -27,7 +27,7 @@ adminPermissions({
 //rerunning npm install
 modules
 + user
-+ products && wishlisting
++ products && wishlistings
 + payment
 + shipment
 + shopping cart module
