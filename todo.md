@@ -38,7 +38,7 @@ ADMIN_STORE = {
     users: [
         admins,
         delegates, 
-        merchants, 
+        merchantssss,
         shoppers
     ],
     user
