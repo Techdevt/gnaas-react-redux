@@ -1,0 +1,58 @@
+.mdl-layout__inner-container {
+	.DashContent {
+		margin-top: 64px;
+		@include media('<=1024px') {
+			margin-top: 56px;
+		}
+	}
+
+	.mdl-layout__drawer {
+		background: $white;
+		border: none;
+		.Drawer__Header {
+			height: 192px;
+			position: relative;
+			background: url('#{$path-img}/abstract.jpg') no-repeat center center;
+			border: 1px solid $color-primary--contrast;
+
+			.Drawer__Header_avatar {
+				border-radius: 50%;
+				border-color: $color-primary;
+				border-width: 2px;
+			    width: 80px;
+			    height: 80px;
+			    background: $color-primary--contrast__active;
+			    background-position: center center;
+			    background-repeat: no-repeat;
+			    background-size: contain;
+			    position: absolute;
+			    top: 56px;
+			    left: 20px;
+			}
+			.Drawer__Header_title {
+				position: absolute;
+				bottom: 30px;
+				left: 20px;
+				font-weight: 600;
+				text-overflow: ellipsis;
+			}
+			.Drawer__Header_home {
+				position: absolute;
+				bottom: 0;
+				right: 5px;
+			}
+		} 
+		.mdl-navigation {
+			padding-top: 4px;
+			a {
+				font-weight: 500;
+				font-size: 16px;
+				&.active {
+					background: $color-primary--contrast__active;
+					font-weight: 600;
+					color: $color-primary--contrast;
+				}
+			}
+		}
+	}
+}

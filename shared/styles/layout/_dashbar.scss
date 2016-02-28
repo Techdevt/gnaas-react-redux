@@ -1,0 +1,25 @@
+.DashBar {
+	padding: 0 20px;
+	position: fixed;
+	-webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, .35);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, .35);
+
+	.mdl-layout__drawer-button {
+		@include media('>1024px') {
+			display: none;
+		}
+	}
+
+	.mdl-layout-title {
+		font-weight: 600;
+		font-size: 16px;
+		transition: all .5s ease;
+	}
+
+	.DashBar__right {
+		padding-top: 10px;
+		> * {
+			margin-left: 10px;
+		}
+	}
+}

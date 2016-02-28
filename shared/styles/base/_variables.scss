@@ -1,0 +1,74 @@
+//Color Variables
+$white            : #FFFFFF;
+$black            : #000000;
+
+// Functional color variables
+$color-primary         :   #0F0F0F;
+$color-primary--dark   :   #0C0C0C;
+$color-dark--contrast  :   #FEFEFE;
+$color-dark--contrast__active: #FEFEFE;
+$color-primary--contrast:  #4D4D4D;
+$color-primary--contrast__active: #C3C3C3;
+$color-accent--contrast:   #4D4D4D;
+$color-accent          :   #FF9A0F;
+$color-shadow          :   rgba($black, .2);
+$text-color--primary   :   #212121;
+$text-color--secondary :   #737373;
+$disabled-hint--text   :   #9B9B9B;
+$link-color--default   :   $color-accent;
+$link-color--visited    :  desaturate($color-accent, 30);
+$divider-color          :   #DBDBDB;
+
+// Sizes
+$base__font-size   : 16px;
+$base__line        : 24px;
+$base__padding     : 5px;
+
+// Grid
+$g-col-width       : 65px;
+$g-gutter-width    : 20px;
+$g-col-count       : 12;
+$g-cont-max-w      : 1200px;
+
+// Font Weights
+$font-weight--thin           : 100;
+$font-weight--light          : 300;
+$font-weight--normal         : 400;
+$font-weight--medium         : 500;
+$font-weight--bold           : 700;
+$font-weight--ultra-bold     : 900;
+
+// Type specific variables
+$standard-spacing: 30px;
+
+// Transitioins
+$trns-duration     :  .3s;
+
+// Shades and Tints
+$shd-light: 10%;
+$shd-dark: 20%;
+$tnt-dark: 10%;
+$tnt-light: 20%;
+
+
+%top-margin{
+	margin-top: 80px;
+    @include media('<=869px') {
+        margin-top: 56px;
+    }
+}
+
+//Font stacks
+$font-url--google : 'https://fonts.googleapis.com/css?family=Roboto:400,500,700,500italic,400italic';
+$stack-sans-serif: Helvetica, Arial, sans-serif;
+$font-family--primary: "Roboto", $stack-sans-serif;
+$font-family--secondary: "Helvetica Neue", $stack-sans-serif;
+
+//Border Radius
+$br--default: .4em;
+$br--round: 50%;
+
+//Asset Paths
+$path-img     : '/images';
+$path-svg     : '/svg';
+$path-fonts   : '/fonts';

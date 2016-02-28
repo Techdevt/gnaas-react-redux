@@ -1,0 +1,78 @@
+.Signup {
+    .Signup__container,
+    .mdl-layout__content {
+        position: relative;
+        margin: 40px auto;
+
+        .ReactModalPortal & {
+            margin: 0;
+        }
+
+        .Signup__container--header {
+            background: $color-primary;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            text-align: center;
+            padding: 2px 0;
+            h4 {
+                color: $color-primary--contrast__active;
+                font-weight: $font-weight--bold;
+                font-size: 20px;
+            }
+        }
+
+        .Signup__container--step {
+            padding: 0 20px 20px;
+            .Signup__container--body-fieldrow {
+                width: 100%;
+                display: flex;
+                flex-flow: row nowrap;
+                justify-content: space-between;
+                & > * {
+                    margin-left: 20px;
+                }
+                &.doubly {
+                    &:nth-child(1) {
+                        flex: 1;
+                    }
+                    &:nth-child(2) {
+                        flex: 3;
+                    }
+                }
+
+                &.roles {
+                    padding: 20px;
+                }
+                .mdl-textfield {
+                    width: 100%;
+                }
+                .mdl-checkbox {
+                    width: 50%;
+                    padding-bottom: 10px;
+                }
+                &.actions {
+                    .mdl-button {
+                        flex: 1;
+                        max-width: 50%;
+                        &.success {
+                            background: green;
+                            position: relative;
+                            transition: background .2s ease-in;
+                            &:before {
+                                content: "\2713";
+                                color: green;
+                                background-color: $white;
+                                width: 1.2em;
+                                line-height: 1.2em;
+                                border-radius: 1.2em;
+                                position: absolute;
+                                right: 20px;
+                                top: 10px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

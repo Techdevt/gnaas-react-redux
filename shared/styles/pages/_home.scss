@@ -1,0 +1,49 @@
+.Content {
+  padding: 20px 0;
+  
+
+  @include media('<=740px') {
+    min-height: calc(100vh - 204px);
+    width: 100%;
+  }
+
+  @include media('>740px', '<=1024px') {
+    min-height: calc(100vh - 398px);
+  }
+  @include media('>1024px') {
+    min-height: calc(100vh - 292px);
+    padding: 20px;
+  }
+}
+
+.AsideLayout {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.AsideLayout__card {
+  display: block;
+  height: 256px;
+  width: 320px;
+  margin: 0px auto 16px auto;
+  @include media('<=760px') {
+    width: 100%;
+  }
+}
+
+.AsideLayout__card-image {
+  height: 256px;
+  width: 320px;
+  margin: 0px auto 16px auto;
+  @include media('<=760px') {
+    width: 100%;
+  }
+}
+.AsideLayout__card-image-dog {
+  height: 320px;
+  width: 320px;
+  margin: 0px auto 16px auto;
+  @include media('<=760px') {
+    width: 100%;
+  }
+}

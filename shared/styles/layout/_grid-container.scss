@@ -1,0 +1,127 @@
+// ===========================================================
+// Grid Container
+// ===========================================================
+
+#App, #app-view {
+    height: 100%;
+}
+.grid {
+    @extend %clearfix;
+    @extend .centered;
+    width: 90%;
+    // Make nested grid container 100%
+    [class*="grid__col--"] > & {
+        width: 100%;
+    } 
+    // Set a max-width for grid container
+    @media(min-width: 1100px) {
+        max-width: $g-cont-max-w;
+    }
+}
+
+.container {
+    margin: 0 auto;
+    @include media('>600px', '<=1024px') {
+        max-width: 90%;
+    }
+    @include media('>1024px', '<=1400px') {
+        max-width: 80%;
+    }
+    @include media('>1400px', '<=1600px') {
+        max-width: 70%;
+    }
+    @include media('>1600px') {
+        max-width: 60%;
+    }
+    .flex-grid & {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-flow: row wrap;
+        -ms-flex-flow: row wrap;
+        flex-flow: row wrap;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+        @include media('<=1200px') {
+            width: 100%;
+        }
+        @include media('>600px', '<=1024px') {
+            max-width: none;
+        }
+        @include media('>1024px', '<=1400px') {
+            max-width: none;
+        }
+        @include media('>1400px', '<=1600px') {
+            max-width: none;
+        }
+        @include media('>1600px') {
+            max-width: none;
+        }
+    }
+}
+
+.flex-grid {
+    padding-bottom: 50px;
+    padding-top: 5pc;
+}
+
+.secondary-info {
+    h6 {
+        @include text(14px);
+        margin-bottom: 0
+    }
+    p {
+        @include text(13px);
+    }
+}
+
+.card {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    box-sizing: border-box;
+    display: block;
+    position: relative;
+    padding: 0 15px;
+    -webkit-transition: -webkit-transform 50ms ease;
+    transition: transform 50ms ease;
+    -webkit-animation: card-fade-up 0.5s ease;
+    animation: card-fade-up 0.5s ease;
+    @include media('<=679px') {
+        margin-bottom: 20px;
+    }
+    @include media('>680px') {
+        margin-bottom: 30px;
+    }
+    @include media('>820px') {
+        margin: 0 40px 0 0;
+    }
+    .description {
+        font-size: 14px;
+    }
+    html:not(.ie) & {
+        @extend %clearfix;
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+        -webkit-transition: -webkit-transform 250ms ease-in, box-shadow 250ms ease-in;
+        transition: transform 250ms ease-in, box-shadow 250ms ease-in;
+        -webkit-animation: pulse_card 1000ms 1500ms cubic-bezier(0.17, 0.67, 0.83, 0.67) 3;
+        animation: pulse_card 1000ms 1500ms cubic-bezier(0.17, 0.67, 0.83, 0.67) 3;
+        &:hover {
+            -webkit-transform: scale(1.03);
+            -ms-transform: scale(1.03);
+            transform: scale(1.03);
+            -webkit-animation-play-state: paused;
+            animation-play-state: paused
+        }
+    }
+}
