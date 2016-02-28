@@ -1,0 +1,286 @@
+.AppBar {
+    position: relative;
+    -webkit-transition: box-shadow .25s cubic-bezier(1, 0, 0, 1);
+    transition: box-shadow .25s cubic-bezier(1, 0, 0, 1);
+    width: 100%;
+    div.mdl-layout-spacer {
+        display: none;
+    }
+    div.mdl-layout__drawer-button {
+        @include media('>=740px') {
+            display: none;
+        }
+    }
+    div.AppBar__logo {
+        position: absolute;
+        top: 40%;
+        left: 40px;
+        width: 200px;
+        height: auto;
+        vertical-align: middle;
+        @include media('<740px') {
+            left: 65px;
+            top: 10px;
+            img {
+                width: auto;
+                height: 48px;
+            }
+        }
+    }
+    div.mdl-layout__header-row {
+        padding: 0;
+        height: 64px;
+        @include media('>=740px') {
+            height: auto;
+            min-height: 64px;
+        }
+        .AppBar__main {
+            position: relative;
+            .AppBar__main--top {
+                position: relative;
+            .AppBar__main--top-nav{
+                position: absolute;
+                right: 0;
+            }
+                .mdl-navigation__link {
+                    .AppBar__menu-item-nav {
+                        color: $color-primary--contrast;
+                        cursor: pointer;
+                        &:hover {
+                            color: $color-primary--contrast__active;
+                        }
+                    }
+                    .AppBar__menu-item-dropdown {
+                        background: $color-primary--contrast__active;
+                        border-top: 1px solid $color-primary--contrast;
+                        border-bottom-left-radius: 2px;
+                        border-bottom-right-radius: 2px;
+                        li.mdl-menu__item {
+                            font-weight: 500;
+                        }
+                        a {
+                            color: $text-color--primary;
+                        }
+                    }
+                }
+                @include media('<740px') {
+                    display: none;
+                }
+            }
+            .AppBar__main--middle {
+                @include media('<740px') {
+                    .AppBar__main--middle-catselect {
+                        display: none;
+                    }
+                    .AppBar__main--middle-search {
+                        width: 100%;
+                        height: 40px;
+                        .mdl-textfield {
+                            width: 100%;
+                            padding: 5px 0;
+                            .mdl-button {
+                                right: 0;
+                                top: 0;
+                            }
+
+                            .mdl-textfield__input {
+                                border: none;
+                                color: $white;
+                                padding: 10px;
+                                font-size: 18px;
+                                font-weight: bold;
+                                width: 100%;
+                            }
+                        }
+                        .mdl-textfield--expandable {
+                            width: 100%;
+
+                            .mdl-textfield__label {
+                                color: $color-primary--contrast;
+                                top: 10px;
+                                padding-left: 10px;
+                            }
+                        }
+                        .mdl-textfield.is-focused {
+                            .mdl-textfield__expandable-holder {
+                                max-width: 80%;
+                                width: 80%;
+                                background: #FFF;
+                            }
+                            .mdl-textfield__input {
+                                color: $black;
+                            }
+                        }
+                        .AppBar__main--middle-search-input {
+                            width: 100%;
+                        }
+                    }
+                }
+                @include media('>=740px','<=1024px') {
+                    width: 60%;
+                    margin-left: 40%;
+                    display: table;
+                    .AppBar__main--middle-catselect {
+                        display: table-row;
+                        width: 100%;
+                        .mdl-textfield {
+                            width: 100%;
+                            padding: 20px 0 15px;
+                            border-bottom: 1px solid $color-primary--contrast;
+                            .mdl-textfield__input{
+                                color: $color-primary--contrast__active;
+                            }
+                        }
+                        .mdl-textfield__label {
+                            color: $color-primary--contrast;
+                        }
+                        .getmdl-select.is-focused i.mdl-icon-toggle__label {
+                            color: $color-primary--contrast__active;
+                        }
+                    }
+                    .AppBar__main--middle-search {
+                        display: table-row;
+                        width: 100%;
+
+                        .mdl-textfield {
+                            width: 100%;
+                            .mdl-button {
+                                right: 0;
+                                color: $color-primary--contrast;
+                            }
+                        }
+
+                        .mdl-textfield__expandable-holder {
+                            max-width: 80%;
+                            width: 80%;
+                            margin-left: 0;
+                            .mdl-textfield__label {
+                                color: $color-primary--contrast;
+                                top: 0;
+                            }
+                            .mdl-textfield.is-focused & {
+
+                            }
+                        }
+                    }
+                }
+
+                @include media('>1024px') {
+                    width: 80%;
+                    margin-left: 20%;
+                    padding-left: 20px;
+
+                    .AppBar__main--middle-catselect {
+                        width: 40%;
+                        border-right: 1px solid $color-primary--contrast;
+                        .mdl-textfield {
+
+                            width: 100%;
+                            padding: 20px 20px 15px 0;
+                            border-bottom: 1px solid $color-primary--contrast;
+                            .mdl-textfield__input{
+                                color: $color-primary--contrast__active;
+                            }
+                        }
+                        .mdl-textfield__label {
+                            color: $color-primary--contrast;
+                        }
+                        .getmdl-select.is-focused i.mdl-icon-toggle__label {
+                            color: $color-primary--contrast__active;
+                        }
+                    }
+
+                    .AppBar__main--middle-search {
+                        width: 60%;
+                        border-bottom: 1px solid $color-primary--contrast;
+
+                        .mdl-textfield {
+                            width: 100%;
+                            padding: 18px 0;
+                            .mdl-button {
+                                right: 0;
+                                color: $color-primary--contrast;
+                            }
+                        }
+
+                        .mdl-textfield__expandable-holder {
+                            max-width: 80%;
+                            width: 80%;
+                            margin-left: 20px;
+                            .mdl-textfield__label {
+                                color: $color-primary--contrast;
+                                top: 0;
+                            }
+                        }
+                    }
+                }
+
+                @include media('>1650px') {
+                    width: 100%;
+                    margin-left: 0;
+                    padding-left: 20px;
+                    padding-bottom: 5px;
+                }
+            }
+            .AppBar__main--bottom {
+                overflow: hidden;
+                .mdl-navigation__link {
+                    a {
+                        color : $color-primary--contrast;
+                        text-transform: uppercase;
+                        font-size: 11px;
+                        @include media('>=900px') {
+                            font-size: 13px;
+                            font-weight: $font-weight--bold;
+                        }
+                        &:hover {
+                            color: $color-primary--contrast__active;
+                        }
+                        &.active {
+                            color: $color-accent;
+                        }
+                    }
+                }
+                @include media('<740px') {
+                    display: none;
+                }
+
+            }
+            .AppBar__fav {
+                position: absolute;
+                bottom: -20px;
+                right: 0;
+                display: none;
+                @include media('>=740px') {
+                    display: block;
+                }
+                @include media('<800px'){
+                    width: 36px;
+                    min-width: 36px;
+                    height: 36px;
+                }
+            }
+        }
+    }
+    ul {
+        li {
+            list-style: none;
+            margin: 0 1px;
+            a {
+                @include text(14px, 24px, 500, $text-color--secondary);
+                height: 80px;
+                display: block;
+                outline: none;
+                text-transform: uppercase;
+                border-bottom: 4px solid transparent;
+                padding: 32px 16px 20px 16px;
+                transition: all ease-in 0.15s;
+                webkit-transition: all ease-in 0.15s;
+                &:hover,
+                &.active {
+                    color: $color-primary;
+                }
+            }
+        }
+    }
+}

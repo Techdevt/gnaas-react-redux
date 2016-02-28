@@ -1,0 +1,270 @@
+@import 'reset';
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+html,
+body {
+    @include text(px2em(16px), ($base__line / $base__font-size), $font-weight--medium, $text-color--primary);
+    font-family: $font-family--primary;
+    text-rendering: geometricPrecision;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100%;
+    height: 100%;
+}
+
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+}
+
+button,
+.button,
+input[type='submit'],
+input[type='button'],
+input[type='reset'] {
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, width 0.3s ease, opacity 0.3s ease;
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, width 0.3s ease, opacity 0.3s ease;
+    border-radius: $br--default;
+    cursor: pointer;
+    display: inline-block;
+    font-family: $font-family--primary;
+    font-weight: 500;
+    position: relative;
+    margin: 0;
+    outline: none;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: baseline;
+    white-space: nowrap;
+    background-color: transparent;
+    color: $color-primary;
+    &.small {
+        @include text($size: px2em(12px), $lheight: (34px / 12px));
+        height: px2em(38px, 12px);
+        padding: 0 px2em(26px, 12px);
+    }
+}
+
+button:last-child,
+.button:last-child,
+input[type='submit']:last-child,
+input[type='button']:last-child,
+input[type='reset']:last-child {
+    margin-right: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: $text-color--primary;
+    font-style: normal;
+    line-height: 1.4;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    text-rendering: optimizeLegibility;
+}
+
+h1 {
+    @include text(px2em(46px));
+}
+
+h2 {
+    @include text(px2em(40px));
+}
+
+h3 {
+    @include text(px2em(26px));
+}
+
+h4 {
+    @include text(px2em(18px));
+}
+
+h5 {
+    @include text(px2em(16px));
+}
+
+h6 {
+    @include text(px2em(14px));
+}
+
+p {
+    @include text(px2em(14px), 1.6, null, $text-color--primary);
+    margin-top: px2em(10px, 14px);
+    margin-bottom: px2em(20px, 14px);
+}
+
+a {
+    color: $link-color--default;
+    text-decoration: none;
+    &:visited,
+    &:hover {
+        color: $link-color--visited;
+    }
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    width: auto;
+}
+
+[layout-fill] {
+    height: 100% !important;
+    position: absolute;
+}
+
+::selection {
+    background-color: $color-primary;
+    color: $white;
+}
+
+html|* > svg {
+    transform-origin: 50% 50% 0px;
+}
+
+
+svg {
+    overflow: visible;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    -webkit-transform-origin: center center;
+    -ms-transform-origin: center center;
+    transform-origin: center center;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transition: fill 300ms ease, -webkit-transform 300ms ease, opacity 300ms ease;
+    transition: fill 300ms ease, transform 300ms ease, opacity 300ms ease;
+}
+
+a img {
+    border: none;
+}
+
+.material-icons {
+    @include text(24px, 1, normal, null);
+    font-style: normal;
+    display: inline-block;
+    outline: none;
+    width: 1em;
+    height: 1em;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+}
+
+.padding {
+    padding: $base__padding;
+}
+
+.form-input {
+    border-radius: $br--default;
+    border: 2px solid #d9d7d5;
+    box-sizing: border-box;
+    font-size: 1em;
+    padding: 0.625em;
+    -webkit-transition: border-color 0.2s ease-in-out;
+    transition: border-color 0.2s ease-in-out;
+    width: 100%;
+}
+
+.text-centered {
+    text-align: center;
+}
+
+iframe,
+object,
+embed {
+    max-width: 100%;
+}

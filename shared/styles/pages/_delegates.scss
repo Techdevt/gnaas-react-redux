@@ -1,0 +1,141 @@
+.Delegates {
+	background: #fafafa;
+	min-height: calc(100vh - 64px);
+    .Delegates__ActionBar {
+    	background: $color-primary;
+    	position: relative;
+        height: 56px;
+        -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, .35);
+        box-shadow: 0 1px 6px rgba(0, 0, 0, .35);
+        .Delegates__ActionBar_inner {
+            .Delegates__ActionBar_right {
+                position: absolute;
+                right: 100px;
+                top: 30px;
+            }
+        }
+    }
+
+    .Delegates_List {
+    	padding: 40px;
+    	width: 100%;
+    	.Delegate__Collection_actions {
+    		.filter {
+    			display: inline-block;
+    			float: right;
+    			position: relative;
+    			margin-top: 20px;
+    			color: $text-color--secondary;
+    		}
+
+    	}
+ 		.Delegate__Item {
+ 			position: relative;
+ 			padding: 5px;
+ 			transition: all .1s ease-in;
+ 			border-top: 2px solid lighten($color-primary--contrast__active, 15%);
+ 			cursor: pointer;
+ 		
+ 			&:hover {
+ 				background: $white;
+ 			}
+ 			&:nth-of-type(n) {
+ 				border-bottom: 2px solid lighten($color-primary--contrast__active, 15%);
+ 			}
+ 		
+ 			.Delegate__Item_subcontainer {
+ 				display: inline-block;
+ 				margin-right: 100px;
+ 				&:last-child {
+ 					margin-right: 0;
+ 				}
+ 				.Delegate__Item_avatar {
+ 					display: inline-block;
+ 					width: 50px;
+ 					height: 50px;
+ 					border-radius: 50%;
+ 				}
+ 				.Delegate__Item_name, .Delegate__Item_email {
+ 					font-size: 16px;
+ 					font-weight: 600;
+ 					color: $text-color--secondary;
+ 					text-rendering: optimizeLegibility;
+ 					text-overflow: ellipsis;
+ 					line-height: 48px;
+ 				}
+ 				.Delegate__Item_active {
+ 					.circle {
+ 						width: 10px;
+					    height: 10px;
+					    display: inline-block;
+					    border-radius: 5px;
+					    &.active {
+					    	background: lighten(green, 10%);
+					    }
+					    &.inactive{
+					    	background: lighten(yellow, 10%);
+					    }
+ 					}
+ 				}
+ 				& > * {
+ 					padding-left: 10px;
+ 					float: left;
+ 					&:last-child {
+ 						float: none;
+ 					}
+ 				}
+
+ 				&.Delegate__Item_actions {
+ 					display: inline-block;
+ 					position: absolute;
+ 					right: 0;
+ 					top: 10px;
+ 					& > * {
+ 						margin-right: 10px;
+ 						&:last-child {
+ 							padding-right: 0;
+ 						}
+ 					}
+
+					.mdl-button {
+						color: $text-color--secondary;
+					}
+ 						
+ 				}
+ 			}
+ 		}
+    }
+}
+
+.success-icon, .failure-icon {
+	position: relative !important;
+	color: $white;
+	padding: 6px;
+	border-radius: 50%;
+	right: inherit !important;
+	top: inherit !important;
+	margin: 0 auto;
+	font-size: 1.5em;
+    width: 1.5em;
+    height: 1.5em;
+    left: 35%;
+    bottom: 10px;
+}
+.success-icon {
+    background: green;
+}
+.failure-icon {
+    background: red;
+}
+
+.success-icon.is-animating {
+	-webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -o-transition: all .5s ease;
+    transition: all .5s ease;
+	transform: scale(1.5);
+}
+
+.EditDelegate {
+    min-height: calc(100vh - 64px) !important;
+}
