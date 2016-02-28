@@ -24,7 +24,7 @@ adminPermissions({
 //test route edituser with file
 //proof test delete user
 
-//this is serious
+//rerunning npm install
 modules
 + user
 + products && wishlisting
