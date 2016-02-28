@@ -20,4 +20,4 @@ mv  "${OPENSHIFT_REPO_DIR}/package.json"  "$(get_node_tmp_dir)"
 
 
 echo "installing node-gyp and other dependencies"
-(cd "${OPENSHIFT_REPO_DIR}"; export TMPDIR="/tmp"; npm install -g node-gyp@3.2.0; export PYTHONPATH="${OPENSHIFT_REPO_DIR}node_modules/node-gyp/gyp"; npm install -g webpack; npm install -g extract-text-webpack-plugin@1.0.1;)
+(cd "${OPENSHIFT_REPO_DIR}"; export TMPDIR="/tmp"; npm install -g node-gyp@3.2.0; export PYTHONPATH="${OPENSHIFT_REPO_DIR}node_modules/node-gyp/gyp"; npm install -g webpack@1.9.x; npm install -g extract-text-webpack-plugin@1.0.1;)
