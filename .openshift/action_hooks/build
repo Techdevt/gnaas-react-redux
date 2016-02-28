@@ -11,10 +11,6 @@ source "$OPENSHIFT_REPO_DIR/.openshift/lib/utils"
 #  Setup path to include the custom Node[.js] version.
 _SHOW_SETUP_PATH_MESSAGES="true" setup_path_for_custom_node_version
 
-echo "installing node-gyp and other dependencies"
-export PYTHONPATH="${OPENSHIFT_REPO_DIR}node_modules/node-gyp/gyp"
-(cd ${OPENSHIFT_REPO_DIR}; npm install -g node-gyp@3.2.0; npm install node-libs-browser@0.5.3; npm install --save-dev webpack@1.9.x extract-text-webpack-plugin@1.0.1;)
-
 
 #  So we we moved the package.json file out of the way in pre_build,
 #  so that the OpenShift git post-receive hook doesn't try and use the
