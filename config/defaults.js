@@ -27,7 +27,7 @@ export default {
     host: process.env.NPM_CONFIG_PRODUCTION ? process.env.OPENSHIFT_NODEJS_IP: '127.0.0.1',
     port: process.env.NPM_CONFIG_PRODUCTION ? process.env.OPENSHIFT_NODEJS_PORT: 3000,
     dbUser: 'admin',
-    dbPass: 'HSkHUAZYVsCT',
+    dbPass: '6JJ2tXhtBTR9',
     superAdmin: {
         password: 'fanky5g2010'
     },
