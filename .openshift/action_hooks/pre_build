@@ -17,8 +17,3 @@ ensure_node_is_installed
 #  that the OpenShift git post-receive hook doesn't try and use the old
 #  npm version to install the dependencies.
 mv  "${OPENSHIFT_REPO_DIR}/package.json"  "$(get_node_tmp_dir)"
-echo "installing node-gyp and other dependencies"
-export PYTHONPATH="${OPENSHIFT_REPO_DIR}node_modules/node-gyp/gyp"
-(cd ${OPENSHIFT_REPO_DIR}; npm install -g node-gyp@3.2.0; npm install node-libs-browser@0.5.3; npm install --save-dev webpack@1.9.x extract-text-webpack-plugin@1.0.1;)
-
-
