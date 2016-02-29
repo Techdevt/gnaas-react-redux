@@ -9,7 +9,10 @@
     "test:watch": "npm run test -- --watch",
     "start": "set NODE_ENV=production&& set NODE_PATH=./shared&& node --harmony .",
     "wdev": "set NODE_PATH=./shared&& node --harmony .",
-    "wbuild": "set NODE_ENV=production&& webpack --progress --color -p --config webpack.prod.config.js"
+    "wbuild": "set NODE_ENV=production&& webpack --progress --color -p --config webpack.prod.config.js",
+    "lstart": "NODE_PATH=$NODE_PATH:./shared node --harmony .",
+    "ldev": "npm run start & webpack-dev-server --progress --color",
+    "lbuild": "NODE_ENV=production webpack --progress --color -p --config webpack.prod.config.js"
   },
   "keywords": [],
   "author": "",
