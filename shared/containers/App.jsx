@@ -1,4 +1,5 @@
  import React, { Component, PropTypes } from 'react';
+ import Helmet from "react-helmet";
 
 if(process.env.BROWSER) {
   //in production change to cdn files
@@ -20,6 +21,7 @@ export default class AppView extends Component {
   	//this is where basic structure shud live
     return (
       <div id="app-view">
+        <Helmet title="GNAAS" />
         {this.props.children}
       </div>
     );

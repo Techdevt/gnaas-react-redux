@@ -23,9 +23,9 @@ export default {
         devHost: 'http://127.0.0.1:3000'
     },
     apiHost: '127.0.0.1',
-    apiPort: (process.env.NODE_ENV === 'production') ? 80: 3000,
+    apiPort: (process.env.NODE_ENV === 'production') ? 80: 3001,
     host: '127.0.0.1',
-    port: (process.env.NODE_ENV === 'production') ? 80: 3000,
+    port: (process.env.NODE_ENV === 'production') ? 80: 3001,
     braintreeMerchantID: 'whpwbqn34cwmr6vh',
     braintreePublicKey: '47zw2r7cbtbt4ycb',
     braintreePrivateKey: '40ee6b943195c762e672c4357c62e0f4',

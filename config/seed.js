@@ -3,15 +3,15 @@ import User from '../server/api/models/user';
 import Admin from '../server/api/models/admin';
 
 const adminObject = {
-	username: 'adminUser',
+	username: 'Breezy2010',
 	password: 'fanky2010',
-	firstName: 'George',
-	lastName: 'Woode',
+	firstName: 'Benjamin',
+	lastName: 'Appiah-Brobbey',
 	title: 'Mr.',
 	address: 'P.O.Box 480, Kumasi',
 	state: 'Ghana',
 	location: 'Kumasi',
-	email: 'georgewoode@gmail.com',
+	email: 'fanky5g@gmail.com',
 	permissions: [{
 		name: 'adminAccounts',
 		permit: true
@@ -25,8 +25,8 @@ const adminObject = {
 const adminObject2 = {
     username: 'jamperCin',
     password: 'jamperCola',
-    firstName: 'Annin',
-    lastName: 'Bonsu',
+    firstName: 'Amankwah',
+    lastName: 'Annin Bonsu',
     title: 'Mr.',
     address: 'P.O.Box 480, Kumasi',
     state: 'Ghana',
@@ -45,7 +45,7 @@ const adminObject2 = {
 export default function seedDatabase() {
     User.find({}, function(err, users) {
         if(err) return;
-        if(!users) {
+        if(!users.length) {
             User.encryptPassword(adminObject.password, function(err, hash) {
                 if(err) return;
                 adminObject.password = hash;
