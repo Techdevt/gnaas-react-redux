@@ -849,9 +849,12 @@ export function editUser(userId, fieldsToEdit, acToEdit) {
                             new: true
                         }, function(err, updatedUser) {
                             if (err) return reject(err);
-                            Admin.findByIdAndUpdate(updatedUser.roles.admin, fieldsToEdit, function(err, updateAdmin) {
-                                if (err) return reject(err);
 
+                            const adminId = (typeof updatedUser.roles.admin === 'object') ? updatedUser.roles.admin._id:
+                                            updatedUser.roles.admin;
+
+                            Admin.findByIdAndUpdate(adminId, fieldsToEdit, function(err, updateAdmin) {
+                                if (err) return reject(err);
                                 let hasAdminPermission = updateAdmin.hasPermissionTo('adminAccounts');
 
                                 if (hasAdminPermission) {
@@ -876,12 +879,12 @@ export function editUser(userId, fieldsToEdit, acToEdit) {
                                         });
                                     }
 
-                                    jwt.sign(updateAdmin.toObject(), config.secret, {
+                                    updatedUser.roles.admin = updateAdmin;
+                                    jwt.sign(updatedUser.toObject(), config.secret, {
                                         algorithm: 'HS256',
                                         expiresIn: '7d'
                                     }, function(token) {
                                         //return token
-                                        updatedUser.roles.admin = updateAdmin;
                                         return resolve({
                                             user: updatedUser,
                                             token: token,
@@ -890,12 +893,12 @@ export function editUser(userId, fieldsToEdit, acToEdit) {
                                     });
 
                                 } else {
-                                    jwt.sign(updateAdmin.toObject(), config.secret, {
+                                    updatedUser.roles.admin = updateAdmin;
+                                    jwt.sign(updatedUser.toObject(), config.secret, {
                                         algorithm: 'HS256',
                                         expiresIn: '7d'
                                     }, function(token) {
                                         //return token
-                                        updatedUser.roles.admin = updateAdmin;
                                         return resolve({
                                             user: updatedUser,
                                             token: token,

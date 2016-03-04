@@ -1,7 +1,7 @@
 import request from 'axios';
 import apiConfig from '../../config/defaults';
 
-const methods = ['get', 'post', 'put', 'patch', 'del'];
+const methods = ['get', 'post', 'put', 'patch', 'delete'];
 
 function formatUrl(path) {
     const adjustedPath = path[0] !== '/' ? '/' + path : path;

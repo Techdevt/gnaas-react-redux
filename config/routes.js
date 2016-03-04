@@ -9,6 +9,8 @@ import multer from 'multer';
 import path from 'path';
 import config from './defaults';
 import ImageUtils from '../server/api/utils/image';
+import Category from '../server/api/utils/controllers/categories';
+import Product from '../server/api/utils/controllers/products';
 
 let storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -27,7 +29,7 @@ const upload = multer({ storage: storage, limits: limits });
 
 export default function(app) {
     app.post('/user',upload.single('avatar'), function(req, res) {
-    	SignUp(req, res);
+        SignUp(req, res);
     });
 
     app.post('/auth', function(req, res) {
@@ -112,5 +114,52 @@ export default function(app) {
             }
             res.status(httpStatus.OK).send(users);
         });
+    });
+
+    app.post('/category', Auth, function(req, res) {
+        const category = new Category();
+        category.add(req.body)
+                .then((result) => {
+                    res.status(httpStatus.OK).send(result);
+                }, (err) => {
+                    res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+                }); 
+    });
+
+    app.put('/category', Auth, function(req, res) {
+        const category = new Category();
+        category.edit(req.body.id, req.body)
+                .then((result) => {
+                    res.status(httpStatus.OK).send(result);
+                }, (err) => {
+                    res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+                });
+    });
+
+    app.delete('/category/:id', Auth, function(req, res) {
+        const category = new Category();
+        category.delete(req.params.id)
+                .then((result) => {
+                        res.status(httpStatus.OK).send(result);
+                    }, err => res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err));
+    });
+
+    app.get('/category', function(req, res) {
+        const category = new Category();
+        category.get()
+            .then((result) => {
+                res.status(httpStatus.OK).send(result);
+            }, (err) => {
+                res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err)
+            });
+    });
+
+    app.post('/product', Auth, upload.array('images', 8), function(req, res) {
+        //process images 
+        let product = req.body;
+        product.images = req.files;
+        Product.addProduct(product)
+               .then((result) => res.status(httpStatus.OK).send(result), 
+                 err => res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err));
     });
 }

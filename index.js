@@ -39,7 +39,7 @@ proxy.on('error', (error, req, res) => {
 });
 
 if (config.port) {
-  server.listen(config.port, config.host, (err) => {
+  server.listen(config.port, (err) => {
     if (err) {
       console.error(err);
     }

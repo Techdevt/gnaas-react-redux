@@ -22,9 +22,8 @@ import ActionResult from 'components/ActionResult';
 export default class Profile extends Component {
 	constructor(props) {
 		super(props);
-		const { user, type, acToEdit } = this.props;
+		const { user, type } = this.props;
 		this.state = {
-			acToEdit: acToEdit,
 			firstName: user.roles[type].firstName,
 			lastName: user.roles[type].lastName,
 			username: user.username,
@@ -43,7 +42,6 @@ export default class Profile extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		console.log('called');
 		this.props.setDirty();
 	}
 
@@ -454,7 +452,6 @@ export default class Profile extends Component {
 			    						<ul className="Role_List" ref="permissions">
 				    						{
 				    							JSON.parse(JSON.stringify(this.state.permissions)).map((permission, index) => {
-				    								console.log(permission);
 				    								return (
 				    									<li key={index} className="Role_Item">
 				    										<Switch id={permission.name} key={index} checked={permission.permit} onChange={this.permissionRemoved}>{permission.name}</Switch>

@@ -4,6 +4,8 @@ if(process.env.BROWSER) {
   //in production change to cdn files
   require('material-design-icons/iconfont/material-icons.css');
   require('styles/mdl-styles/material-design-lite.scss');
+  //require('react-mdl/extra/material.css');
+  require('react-mdl/extra/material.min.js');
   //material-design selectbox
   require('getmdl-select/getmdl-select.min');
   require('getmdl-select/getmdl-select.min.css');
@@ -22,4 +24,4 @@ export default class AppView extends Component {
       </div>
     );
   }
-} 
+}

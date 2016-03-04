@@ -22,6 +22,26 @@ const adminObject = {
 	avatarUrl: ['/images/gravatar.png']
 };
 
+const adminObject2 = {
+    username: 'jamperCin',
+    password: 'jamperCola',
+    firstName: 'Annin',
+    lastName: 'Bonsu',
+    title: 'Mr.',
+    address: 'P.O.Box 480, Kumasi',
+    state: 'Ghana',
+    location: 'Kumasi',
+    email: 'jampercola@gmail.com',
+    permissions: [{
+        name: 'adminAccounts',
+        permit: true
+    },{
+        name: 'userAccounts',
+        permit: true
+    }],
+    avatarUrl: ['/images/gravatar.png']
+};
+
 export default function seedDatabase() {
     User.find({}, function(err, users) {
         if(err) return;
@@ -36,7 +56,22 @@ export default function seedDatabase() {
                     	user.roles.admin = admin;
                     	user.save(function(err, user) {
                     		if(err) return;
-                    		return true;
+
+                            User.encryptPassword(adminObject2.password, function(err, hash) {
+                                if(err) return;
+                                adminObject2.password = hash;
+                                User.create(adminObject2, function(err, user2) {
+                                    adminObject2.user = user2._id;
+                                    Admin.create(adminObject2, function(err, admin2) {
+                                        if(err)  return;
+                                        user2.roles.admin = admin2;
+                                        user2.save(function(err, res) {
+                                            if(err) return;
+                                            return true;
+                                        })
+                                    });
+                                });
+                            });
                     	})
                     });
                 });

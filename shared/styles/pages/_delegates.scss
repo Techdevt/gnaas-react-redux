@@ -4,7 +4,7 @@
     .Delegates__ActionBar {
     	background: $color-primary;
     	position: relative;
-        height: 56px;
+        height: 64px;
         -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, .35);
         box-shadow: 0 1px 6px rgba(0, 0, 0, .35);
         .Delegates__ActionBar_inner {
@@ -29,6 +29,18 @@
     		}
 
     	}
+        .labelHeader {
+            padding: 0;
+            .item {
+                span{
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: $text-color--secondary;
+                    text-rendering: optimizeLegibility;
+                    margin-left: 10px;
+                }
+            }
+        }
  		.Delegate__Item {
  			position: relative;
  			padding: 5px;
@@ -39,13 +51,15 @@
  			&:hover {
  				background: $white;
  			}
- 			&:nth-of-type(n) {
+ 			&:last-child {
  				border-bottom: 2px solid lighten($color-primary--contrast__active, 15%);
  			}
  		
  			.Delegate__Item_subcontainer {
  				display: inline-block;
- 				margin-right: 100px;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
  				&:last-child {
  					margin-right: 0;
  				}
@@ -54,16 +68,37 @@
  					width: 50px;
  					height: 50px;
  					border-radius: 50%;
+                    &.icon {
+                        color: #fff;
+                        background: $text-color--secondary;
+                        //background: #2A80BA;
+                        padding-top: 12px;
+                        padding-left: 12px;
+                        margin-right: 5px;
+                        transition: all .2s ease;
+                    }
  				}
+                
  				.Delegate__Item_name, .Delegate__Item_email {
  					font-size: 16px;
  					font-weight: 600;
  					color: $text-color--secondary;
  					text-rendering: optimizeLegibility;
- 					text-overflow: ellipsis;
  					line-height: 48px;
+                    &.readOnly {
+                            input {
+                                font-weight: 600;
+                                color: $text-color--secondary;
+                                font-size: 15px;
+                                border: none;
+                                text-rendering: optimizeLegibility;
+                            }
+                    }
  				}
+
  				.Delegate__Item_active {
+                    padding-top: 10px;
+                    display: inline-block;
  					.circle {
  						width: 10px;
 					    height: 10px;
@@ -87,20 +122,19 @@
 
  				&.Delegate__Item_actions {
  					display: inline-block;
- 					position: absolute;
- 					right: 0;
- 					top: 10px;
- 					& > * {
- 						margin-right: 10px;
- 						&:last-child {
- 							padding-right: 0;
- 						}
- 					}
+ 		            .inner {
+                        float: right;
+                        & > * {
+                            margin-right: 10px;
+                            &:last-child {
+                                padding-right: 0;
+                            }
+                        }
 
-					.mdl-button {
-						color: $text-color--secondary;
-					}
- 						
+                        .mdl-button {
+                            color: $text-color--secondary;
+                        }
+                    }	
  				}
  			}
  		}

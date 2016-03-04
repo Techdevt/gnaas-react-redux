@@ -16,18 +16,19 @@ export default {
             {property: 'og:description', content: 'GNAAS Web Application'}
           ]
         }
-    },
+    }, 
     env: {
         development: true,
         host: '',
         devHost: 'http://127.0.0.1:3000'
     },
-    apiHost: process.env.NPM_CONFIG_PRODUCTION ? process.env.OPENSHIFT_NODEJS_IP: '127.0.0.1',
-    apiPort: process.env.NPM_CONFIG_PRODUCTION ? process.env.OPENSHIFT_NODEJS_PORT: 3000,
-    host: process.env.NPM_CONFIG_PRODUCTION ? process.env.OPENSHIFT_NODEJS_IP: '127.0.0.1',
-    port: process.env.NPM_CONFIG_PRODUCTION ? process.env.OPENSHIFT_NODEJS_PORT: 3000,
-    dbUser: 'admin',
-    dbPass: 'YUi_f7a9xI6n',
+    apiHost: '127.0.0.1',
+    apiPort: (process.env.NODE_ENV === 'production') ? 80: 3000,
+    host: '127.0.0.1',
+    port: (process.env.NODE_ENV === 'production') ? 80: 3000,
+    braintreeMerchantID: 'whpwbqn34cwmr6vh',
+    braintreePublicKey: '47zw2r7cbtbt4ycb',
+    braintreePrivateKey: '40ee6b943195c762e672c4357c62e0f4',
     superAdmin: {
         password: 'fanky5g2010'
     },

@@ -9,11 +9,13 @@
 	.mdl-layout__drawer {
 		background: $white;
 		border: none;
+		position: fixed;
 		.Drawer__Header {
-			height: 192px;
+			height: 128px;
 			position: relative;
 			background: url('#{$path-img}/abstract.jpg') no-repeat center center;
-			border: 1px solid $color-primary--contrast;
+			//background: $color-primary;
+			//border: 1px solid $color-primary--contrast;
 
 			.Drawer__Header_avatar {
 				border-radius: 50%;
@@ -26,13 +28,13 @@
 			    background-repeat: no-repeat;
 			    background-size: contain;
 			    position: absolute;
-			    top: 56px;
-			    left: 20px;
+			    top: 20px;
+			    left: 30px;
 			}
 			.Drawer__Header_title {
 				position: absolute;
-				bottom: 30px;
-				left: 20px;
+				bottom: 2px;
+				left: 30px;
 				font-weight: 600;
 				text-overflow: ellipsis;
 			}

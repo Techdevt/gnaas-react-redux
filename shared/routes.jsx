@@ -21,9 +21,15 @@ import WishList from 'components/WishList';
 import Delegates from 'components/Delegates';
 import EditDelegate from 'components/EditDelegate';
 import Users  from 'components/Users';
-import EditUser from 'components/editUser';
+import EditUser from 'components/EditUser';
 import EditProfile from 'components/EditAccount/Profile';
 import EditContactDetails from 'components/EditAccount/EditContactDetails';
+import Categories from 'components/Categories';
+import Catalog from 'components/Catalog';
+import Goods from 'components/Catalog/Goods';
+import ShopCategories from 'components/Catalog/Categories';
+import Brands from 'components/Catalog/Brands';
+import Options from 'components/Catalog/Options';
  
 if(process.env.BROWSER) {
 	require('react-mdl/extra/material');
@@ -57,6 +63,13 @@ export default (
         <Route name="Contact Details" path="contact-details" component={EditContactDetails}/>
       </Route>
       <Route name="Edit Delegate" component={EditDelegate} path="delegates/:id" />
+      <Route name="Categories" component={requireAuthentication(Categories, 'admin')} path="categories" />
+      <Route name="Catalog" component={requireAuthentication(Catalog, 'merchant')} path="catalog">
+          <IndexRoute name="Goods" component={Goods}/>
+          <Route name="Categories" path="categories" component={ShopCategories}/>
+          <Route name="Brands" path="brands" component={Brands}/>
+          <Route name="Options" path="options" component={Options}/>
+      </Route>
     </Route>
   </Route>
 );

@@ -24,8 +24,8 @@ const component = (
 );
 
 render(
-	<Provider store={store} key="provider">
-  	{component}
+  <Provider store={store} key="provider">
+    {component}
   </Provider>,
   document.getElementById('App')
 );

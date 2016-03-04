@@ -27,7 +27,9 @@ export default class DashLayout extends Component {
         const navLinks = [
             {to: '/dashboard/settings', name: 'Settings', allow: ['merchant', 'delegate', 'shopper', 'admin']},
             {to: '/dashboard/delegates', name: 'Delegates', allow: ['merchant']},
-            {to: '/dashboard/users', name: 'Users', allow: ['admin']}
+            {to: '/dashboard/users', name: 'Users', allow: ['admin']},
+            {to: '/dashboard/categories', name: 'Categories', allow: ['admin']},
+            {to: '/dashboard/catalog', name: 'Catalog', allow: ['merchant']}
         ];
         const links = navLinks.filter(function(link) {
             return link.allow.indexOf(type) !== -1;

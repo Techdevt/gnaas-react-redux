@@ -1,0 +1,57 @@
+.Category .mdl-layout__header-row {
+	padding: 0;
+	.mdl-layout-spacer {
+		display: none;
+	}
+	.confirmTitle {
+		color: #FFF;
+		display: inline-block;
+		margin: 0 auto;
+	}
+}
+
+.mdl-textfield {
+	font-family: $font-family--primary;
+}
+
+.AddItemContainer {
+	width: calc(100vw);
+	min-width: calc(100vh);
+	height: calc(100vh);
+	min-height: calc(100vh);
+	background: #fafafa;
+	position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    .actions {
+    	position: absolute;
+    	bottom: 0;
+    }
+}
+
+.example{
+	background: black;
+}
+.example-enter {
+  opacity: 0.01;
+  background: black;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}

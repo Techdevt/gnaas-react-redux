@@ -1,10 +1,14 @@
 import mongoose from 'mongoose';
 
 let ProductSchema = mongoose.Schema({
-	productId: mongoose.Schema.Types.ObjectID,
-	productTitle: { type: String, maxLength: 50},
+	productName: { type: String, maxLength: 50},
 	price: Number, //double
-	quantity: Number
+	quantity: Number,
+	owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Merchant' },
+	category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
+	brand: { type: mongoose.Schema.Types.ObjectId, ref: 'Brand' },
+	color: String,
+	images: [String]
 });
 
 ProductSchema.methods.addProduct = () => {

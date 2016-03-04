@@ -17,7 +17,6 @@ import FileUtils from './file';
 import ImageUtils from './image';
 
 export function sendActivationEmail(req, res, options) {
-    console.log(options);
     return new Promise(function(resolve, reject) {
         sendEmail(req, res, {
             from: config.smtp.from.name + ' <' + config.smtp.from.address + '>',
@@ -81,7 +80,6 @@ export function SignUp(req, res) {
                     createAccount(userModel, id).then(function(account) {
                         //save avatar to user directory using user id
                         let ErrorsOccured = {};
-                        console.log(account);
 
                         try {
                             const fileHandler = new FileUtils();
@@ -182,11 +180,11 @@ export function SignUp(req, res) {
 }
 
 export function deleteUserAccount(req, res) {
-    var userId = req.body.id;
-    var userPass = req.body.password;
-    var delegateId = req.body.delegateId || null;
+    const userId = req.user.id;
+    const userPass = req.body.password;
+    const acToDelete = req.body.acToDelete || null;
 
-    deleteUser(userId, userPass, delegateId).then(function(res) {
+    deleteUser(userId, userPass, acToDelete).then(function(res) {
         res.status(httpStatus.OK).send(res);
     }, function(err) {
         res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
@@ -211,8 +209,8 @@ export function editUserAccount(req, res) {
                 fieldsToEdit.avatarUrl = result;
                 editUser(userId, fieldsToEdit, acToEdit).then(function(data) {
                     if(data.token) {
-                        res.session.token = data.token;
-                        res.save((err) => {
+                        req.session.token = data.token;
+                        req.session.save((err) => {
                             res.status(httpStatus.OK).send(data);
                         });
                     } else {
@@ -230,8 +228,8 @@ export function editUserAccount(req, res) {
     } else {
         editUser(userId, fieldsToEdit, acToEdit).then(function(data) {
             if(data.token) {
-                res.session.token = data.token;
-                res.save((err) => {
+                req.session.token = data.token;
+                req.session.save((err) => {
                     res.status(httpStatus.OK).send(data);
                 });
             } else {

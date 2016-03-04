@@ -85,7 +85,6 @@ export default function AuthReducer(state = defaultState, action) {
         case 'EDIT_USER':
             //add edited result object so we can update which fields succeeded
             //if delegate is editing? change
-
             if(action.res.data.type === 'merchantEditDelegate') {
                 return state.withMutations((state) => {
                     state
@@ -112,7 +111,6 @@ export default function AuthReducer(state = defaultState, action) {
                 authSuccess: true
             });
         case 'EDIT_USER_FAILURE':
-            console.log(action.error);
             return state.merge({
                 message: action.error.message || '',
                 isWaiting: false,

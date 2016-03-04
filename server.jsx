@@ -14,7 +14,7 @@ import { url }                   from './config/database';
 import config                    from './config/defaults';
 import apiRoutes                 from './config/routes';
 import React                     from 'react';
-import { renderToString }        from 'react-dom/server'
+import { renderToString }        from 'react-dom/server';
 import { RouterContext, match }  from 'react-router';
 import createHistory             from 'react-router/lib/createMemoryHistory';
 import routes                    from 'routes';

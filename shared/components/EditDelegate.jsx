@@ -3,16 +3,25 @@ import { connect } from 'react-redux';
 import { Cell, IconButton, Button, Textfield, Header, Layout, Content, Icon, Spinner, Switch, Checkbox } from 'react-mdl';
 import AuthenticatedComponent from 'components/AuthenticatedComponent';
 import AutosizeInput from 'react-input-autosize';
-import { editUser } from 'actions/AuthActions';
+import { editUser, cleanAuthMessage } from 'actions/AuthActions';
 import ActionResult from 'components/ActionResult';
 
-@connect(state => ({delegates: state.Auth.toJSON().user.roles.merchant.delegates, isWaiting: state.Auth.get('isWaiting'), message: state.Auth.get('message')}))
+@connect(state => ({
+	delegates: state.Auth.toJSON().user.roles.merchant.delegates, 
+	isWaiting: state.Auth.get('isWaiting'), 
+	message: state.Auth.get('message'), 
+	authSuccess: state.Auth.get('authSuccess')
+}))
 class EditDelegate extends Component {
 	constructor(props) {
 		super(props);
 		const { params, delegates } = this.props;
-		const id = params.id;
+		const id = delegates.findIndex((item) => {
+			return item._id === params.id;
+		});
+
 		const user = delegates[id];
+		
 		this.state = {
 			roles: user.roles.delegate.roles,
 			address: user.address,
@@ -128,7 +137,7 @@ class EditDelegate extends Component {
 
 	handleSubmit = () => {
 		const { state, currValues } = this;
-		const { dispatch } = this.props;
+		const { dispatch } = this.props; 
 		
 		let formData = new FormData();
 		Object.keys(state).forEach(function(key) {
@@ -143,14 +152,23 @@ class EditDelegate extends Component {
 		dispatch(editUser(formData));
 	};
 
+	clearMessage = () => {
+		const { dispatch } = this.props;
+		dispatch(cleanAuthMessage());
+	};
+
 	render() {
-		const { message } = this.props;
+		const { message, authSuccess } = this.props;
 		const _this = this;
 		return  (
 			<div className="Settings">
 				{
-					message &&
-					<ActionResult isOpen={ message !== '' } message={ message } type="success"/>
+				(message) &&
+					<ActionResult type={(authSuccess) ? 'success': 'failure'} onConfirm={
+						() => {
+							(message !== '') ? this.clearMessage(): false;
+						}
+					} message={message || actionResult} isOpen={true}/>
 				}
 				<div className="Settings__Content EditDelegate grid">
 					<div className="DashContent__inner">

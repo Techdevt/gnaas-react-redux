@@ -1,5 +1,5 @@
 import React, { PropTypes, Component} from 'react';
-import { IconButton, Content, FABButton, Icon, Textfield, Menu, MenuItem } from 'react-mdl';
+import { IconButton, Content, FABButton, Icon, Textfield, Menu, MenuItem, Grid, Cell } from 'react-mdl';
 import ReactDOM from 'react-dom';
 import DelegateModal from 'components/DelegateModal';
 import { createUser } from 'actions/AuthActions';
@@ -48,6 +48,12 @@ class Delegates extends Component {
 		history.pushState(null, `/dashboard/delegates/${id}`);
 	};
 
+	deleteDelegate = (index, evt) => {
+		const { dispatch } = this.props;
+
+		console.log('deleting index', index);
+	};
+
 	render() {
 		const { message, delegates } = this.props;
 		return (
@@ -59,7 +65,7 @@ class Delegates extends Component {
 				<div className="Delegates__ActionBar">
 					<div className="Delegates__ActionBar_inner grid">
 						<div className="Delegates__ActionBar_right">
-							<FABButton colored raised onClick={this.createDelegate} mini>
+							<FABButton colored raised onClick={this.createDelegate}>
 								<Icon name="add"/>
 							</FABButton>
 						</div>
@@ -87,15 +93,15 @@ class Delegates extends Component {
 						{
 							delegates.map((user, index) => {
 								return (
-									<div className="Delegate__Item" key={index} onClick={this.editDelegate.bind(null, index)}>
-										<div className="Delegate__Item_subcontainer">
+									<Grid className="Delegate__Item" key={index}>
+										<Cell col={3} className="Delegate__Item_subcontainer">
 										<User passedAvatar={user.roles.delegate.avatarUrl[1] || user.roles.delegate.avatarUrl[0]} className="Delegate__Item_avatar" />
 										<span className="Delegate__Item_name">{`${user.roles.delegate.firstName} ${user.roles.delegate.lastName}`}</span>
-										</div>
-										<div className="Delegate__Item_subcontainer">
+										</Cell>
+										<Cell col={3} className="Delegate__Item_subcontainer">
 											<span className="Delegate__Item_email">{user.email}</span>
-										</div>
-										<div className="Delegate__Item_subcontainer">
+										</Cell>
+										<Cell col={3} className="Delegate__Item_subcontainer">
 											{
 												user.isActive &&
 													<span className="Delegate__Item_active">
@@ -108,12 +114,14 @@ class Delegates extends Component {
 													<i className="circle inactive"></i> inactive
 													</span>
 											}
-										</div>
-										<div className="Delegate__Item_subcontainer Delegate__Item_actions">
-											<IconButton name="edit"/>
-											<IconButton name="delete"/>
-										</div>
-									</div>
+										</Cell>
+										<Cell col={3} className="Delegate__Item_subcontainer Delegate__Item_actions">
+											<div className="inner">
+												<IconButton name="edit" onClick={this.editDelegate.bind(this, user._id)}/>
+												<IconButton name="delete" onClick={this.deleteDelegate.bind(this, user._id)}/>
+											</div>
+										</Cell>
+									</Grid>
 								);
 							})
 						}

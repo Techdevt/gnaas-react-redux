@@ -1,8 +1,10 @@
 import React, { PropTypes, Component } from 'react';
-import {Cell, IconButton, Button } from 'react-mdl';
-import { editUser, deleteImage } from 'actions/AuthActions';
+import {Cell, IconButton, Button, Spinner } from 'react-mdl';
+import { editUser, deleteImage, cleanAuthMessage } from 'actions/AuthActions';
+import { editUsers, cleanActionResult } from 'actions/UserActions';
 import AutosizeInput from 'react-input-autosize';
 import { connect } from 'react-redux';
+import ActionResult from 'components/ActionResult';
 
 @connect(state => ({
 	isWaiting: state.Auth.get('isWaiting'), 
@@ -25,7 +27,7 @@ export default class ContactDetails extends Component {
 			address: user.address
 		};
 
-		this.currValues = Object.assign({}, this.state, { id: null });
+		this.currValues = Object.assign({}, this.state);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -72,7 +74,7 @@ export default class ContactDetails extends Component {
 		if(!this.props.$dirty) return;
 
 		const { state, currValues } = this;
-		const { dispatch } = this.props;
+		const { dispatch, checks, user } = this.props;
 		
 		let formData = new FormData();
 		Object.keys(state).forEach(function(key) {
@@ -83,7 +85,14 @@ export default class ContactDetails extends Component {
 			}
 		});
 
-		dispatch(editUser(formData));
+		(!checks.isOwnAccount) ? 
+			formData.append("acToEdit", JSON.stringify(user._id)): false;
+		
+		if(checks.isUserAccount) {
+			dispatch(editUsers(formData));
+		} else{
+			dispatch(editUser(formData));
+		}
 		this.props.unsetDirty();
 	};
 
@@ -119,12 +128,30 @@ export default class ContactDetails extends Component {
 		});
 	};
 
+	clearMessage = () => {
+		const { dispatch } = this.props;
+		dispatch(cleanAuthMessage());
+	};
+
+	clearActionResult = () => {
+		const { dispatch } = this.props;
+		dispatch(cleanActionResult());
+	};
+
 	render() {
-		const { type, user } = this.props;
-		const passedAvatar = user.roles[type].avatarUrl[1] || user.roles[type].avatarUrl[0];
+		const { type, user, actionResult, message, actionSuccess, authSuccess } = this.props;
 		
 		return (
 			<div>
+			{
+				(message || actionResult) &&
+				<ActionResult type={(actionSuccess || authSuccess) ? 'success': 'failure'} onConfirm={
+					() => {
+						(message !== '') ? this.clearMessage(): false;
+						(actionResult !== '') ? this.clearActionResult(): false;
+					}
+				} message={message || actionResult} isOpen={true}/>
+			}
 			{
 				<div className="DashContent__inner">
 		    		<Cell className="Settings__main" col={8} phone={4} tablet={8}>
@@ -200,7 +227,10 @@ export default class ContactDetails extends Component {
 		    					</div>
 		    				</div>
 		    			</div>
-		    			<Button raised accent className="Settings__action-btn" onClick={this.handleSubmit}>Update Contact</Button>
+		    			<Button raised accent className="Settings__action-btn" onClick={this.handleSubmit}>Update Contact
+		    			<Spinner singleColor={true} style={{
+		    				display: (this.props.isWaiting || this.props.actionWaiting) ? 'inline-block' : 'none'
+		    			}}/></Button>
 		    		</Cell>
 		    	</div>
 			}
