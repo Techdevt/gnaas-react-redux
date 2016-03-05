@@ -7,10 +7,10 @@
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive",
     "utest": "set NODE_PATH=./shared&&mocha --require . --recursive",
     "test:watch": "npm run test -- --watch",
-    "wstart": "set NODE_ENV=production&& set NODE_PATH=./shared&& node --harmony .",
+    "wstart": "set NODE_ENV=production&& set NODE_PATH=./shared&& pm2 start . -i",
     "wdev": "set NODE_PATH=./shared&& node --harmony .",
     "wbuild": "set NODE_ENV=production&& webpack --progress --color -p --config webpack.prod.config.js",
-    "lstart": "NODE_ENV=production NODE_PATH=$NODE_PATH:./shared node --harmony .",
+    "lstart": "NODE_ENV=production NODE_PATH=$NODE_PATH:./shared pm2 start . -i",
     "ldev": "npm run start & webpack-dev-server --progress --color",
     "lbuild": "NODE_ENV=production webpack --progress --color -p --config webpack.prod.config.js"
   },
