@@ -25,7 +25,7 @@ import EditUser from 'components/EditUser';
 import EditProfile from 'components/EditAccount/Profile';
 import EditContactDetails from 'components/EditAccount/EditContactDetails';
 import Categories from 'components/Categories';
-import Catalog from 'components/Catalog';
+import Catalog from 'components/Catalog/Index';
 import Goods from 'components/Catalog/Goods';
 import ShopCategories from 'components/Catalog/Categories';
 import Brands from 'components/Catalog/Brands';
