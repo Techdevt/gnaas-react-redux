@@ -14,7 +14,7 @@
     "ldev": "npm run start & webpack-dev-server --progress --color",
     "lbuild": "NODE_ENV=production webpack --progress --color -p --config webpack.prod.config.js"
   },
- "keywords": [],
+  "keywords": [],
   "author": "Benjamin Appiah-Brobbey",
   "private": true,
   "license": "ISC",
