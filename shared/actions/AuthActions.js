@@ -1,5 +1,6 @@
 import request from 'axios';
-const BACKEND_URL = 'http://127.0.0.1:3000';
+import config from '../../config/defaults';
+const BACKEND_URL = config.apiHost + ':'  + config.apiPort;
 
 export function createUser(user) {
 	return {

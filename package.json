@@ -14,7 +14,7 @@
     "ldev": "NODE_PATH=$NODE_PATH:./shared node --harmony .",
     "lbuild": "NODE_ENV=production webpack --progress --color -p --config webpack.prod.config.js"
   },
- "keywords": [],
+  "keywords": [],
   "author": "Benjamin Appiah-Brobbey",
   "private": true,
   "license": "ISC",
@@ -67,7 +67,7 @@
     "jsonwebtoken": "^5.5.0",
     "lodash": "^4.3.0",
     "lwip": "0.0.8",
-    "material-design-icons": "^2.1.3",
+    "material-design-icons": "^2.2.0",
     "material-design-lite": "^1.0.6",
     "mkdirp": "^0.5.1",
     "mongoose": "^4.3.3",
