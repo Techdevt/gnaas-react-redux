@@ -1,6 +1,5 @@
 import request from 'axios';
 import config from '../../config/defaults';
-const BACKEND_URL = config.apiHost + ':'  + config.apiPort;
 
 export function createUser(user) {
 	return {
@@ -61,7 +60,7 @@ export function logoutSuccess(data) {
 }
 
 export function logoutBackend() {
-	return request.post(`${BACKEND_URL}/logout`);
+	return request.post('/logout');
 }
 
 export function editUser(fields) {

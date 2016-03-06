@@ -17,14 +17,14 @@ export default {
           ]
         }
     }, 
-    env: {
+    env: { 
         development: true,
         host: '',
         devHost: 'http://127.0.0.1:3000'
     },
-    apiHost: '127.0.0.1',
+    apiHost: 'http://127.0.0.1',
     apiPort: (process.env.NODE_ENV === 'production') ? 8080: 3001,
-    host: '127.0.0.1',
+    host: 'http://127.0.0.1',
     port: (process.env.NODE_ENV === 'production') ? 8080: 3001,
     braintreeMerchantID: 'whpwbqn34cwmr6vh',
     braintreePublicKey: '47zw2r7cbtbt4ycb',
