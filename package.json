@@ -11,7 +11,7 @@
     "wdev": "set NODE_PATH=./shared&& node --harmony .",
     "wbuild": "set NODE_ENV=production&& webpack --progress --color -p --config webpack.prod.config.js",
     "lstart": "NODE_ENV=production NODE_PATH=$NODE_PATH:./shared pm2 start index.js --node-args='--harmony'",
-    "ldev": "npm run start & webpack-dev-server --progress --color",
+    "ldev": "NODE_PATH=$NODE_PATH:./shared node --harmony .",
     "lbuild": "NODE_ENV=production webpack --progress --color -p --config webpack.prod.config.js"
   },
  "keywords": [],
