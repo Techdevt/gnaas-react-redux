@@ -23,6 +23,10 @@ ip-172-31-34-37.us-west-2.compute.internal
 # Private IPs
 172.31.34.37
 
+HAProxy for cluster wide loadbalancing, including balancing several instances of a process per machine
+CDN for static content (e.g. Cloudinary)
+pm2 for process load balancing
+
 <Helmet
     title="My Title"
     titleTemplate="MySite.com - %s"
