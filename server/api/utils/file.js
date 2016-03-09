@@ -106,7 +106,8 @@ export default class fileHandler {
     };
 
     parseIfUploadFolder(url) {
-        const regex = /^\/uploads\//;
+        //const regex = /^\/uploads\//;
+        const regex = new RegExp(`^\\${_path.sep}uploads\\${_path.sep}`);
         if (regex.test(url)) {
             return `server${url}`;
         }
