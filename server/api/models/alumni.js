@@ -3,19 +3,18 @@
 import mongoose from 'mongoose';
 import autopopulate from 'mongoose-autopopulate';
 
-let MerchantSchema = mongoose.Schema({
+let AlumniSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    companyName: String,
+    affiliatedInstitution: String,
+    residingCountry: String,
     avatarUrl: [String],
+    firstName: String,
+    lastName: String,
+    homePhone: String,
     phone: String,
-    delegates: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        autopopulate: true
-    }],
     isVerified: {
         type: Boolean,
         default: false
@@ -26,10 +25,10 @@ let MerchantSchema = mongoose.Schema({
     }
 });
 
-MerchantSchema.plugin(autopopulate);
+AlumniSchema.plugin(autopopulate);
 
-MerchantSchema.index({
+AlumniSchema.index({
     user: 1
 });
 
-module.exports = exports = mongoose.model('Merchant', MerchantSchema);
+module.exports = exports = mongoose.model('Alumni', AlumniSchema);

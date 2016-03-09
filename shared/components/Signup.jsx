@@ -18,8 +18,6 @@ export default class Signup extends Component {
 			username: '',
 			password: '',
 			location: '',
-			state: '',
-			postcode: '',
 			address: ''
 		};
 		this.isMessageActive = false;
@@ -82,7 +80,7 @@ export default class Signup extends Component {
 
 		const { dispatch } = this.props;
 		dispatch(createUser({...this.state, action: {
-            type: 'CREATE_SHOPPER'
+            type: 'CREATE_STUDENT'
         }}));
 	};
 

@@ -1,6 +1,6 @@
 import fs from 'fs';
 import mkdirp from 'mkdirp';
-import path from 'path';
+import _path from 'path';
 import _ from 'lodash';
 import async from 'async';
 
@@ -63,7 +63,7 @@ export default class fileHandler {
 
     copy = (source, dest) => {
         return new Promise(function(resolve, reject) {
-            mkdirp(path.dirname(dest), function(err) {
+            mkdirp(_path.dirname(dest), function(err) {
                 //Set up streams
                 var sourceStream = fs.createReadStream(source),
                     destStream = fs.createWriteStream(dest);
@@ -84,15 +84,12 @@ export default class fileHandler {
 
     move = (sourceFile, destFile) => {
         const _this = this;
+
         return new Promise(function(resolve, reject) {
             _this.copy(sourceFile, destFile).then(function(res) {
                 _this.delete(sourceFile).then(function(res) {
-                    const regex = /^server\/uploads\//;
-
-                    if (regex.test(destFile)) {
-                        return resolve(destFile.substr(6, destFile.length));
-                    }
-                    resolve(destFile);
+                    
+                    resolve(_this.prettify(destFile));
                 }, function(err) {
                     reject(err);
                 });
@@ -100,6 +97,12 @@ export default class fileHandler {
                 reject(err);
             });
         });
+    };
+
+    prettify = (path) => {
+        ///const dirs = _path.dirname(path).split(_path.sep);
+        const startFrom = path.indexOf(`${_path.sep}uploads`);
+        return path.slice(startFrom);
     };
 
     parseIfUploadFolder(url) {

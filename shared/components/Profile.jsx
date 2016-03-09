@@ -21,19 +21,12 @@ class Profile extends Component {
 			email: user.email,
 			title: user.roles[type].title,
 			gender: user.roles[type].gender,
-			companyName: user.roles[type].companyName,
+			affiliatedInstitution: user.roles[type].affiliatedInstitution,
+			residingCountry: user.roles[type].residingCountry,
 			modalIsOpen: false
 		};
 
-		this.currValues = {
-			firstName: user.roles[type].firstName,
-			lastName: user.roles[type].lastName,
-			username: user.username,
-			email: user.email,
-			title: user.roles[type].title,
-			gender: user.roles[type].gender,
-			companyName: user.roles[type].companyname
-		};
+		this.currValues = Object.assign({}, this.state);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -123,7 +116,7 @@ class Profile extends Component {
 		return (
 			<div>
 			{
-				(type === 'shopper') &&
+				(type === 'student') &&
 				<div className="DashContent__inner">
 		    		<Cell className="Settings__main" col={8} phone={4} tablet={8}>
 		    			<h2 className="dash_title">Basic Info</h2>
@@ -172,7 +165,7 @@ class Profile extends Component {
 		    	</div>
 			}
 			{
-				(type === 'merchant') &&
+				(type === 'alumni') &&
 				<div className="DashContent__inner">
 		    		<Cell className="Settings__main" col={8} phone={4} tablet={8}>
 		    			<h2 className="dash_title">Basic Info</h2>
@@ -187,8 +180,19 @@ class Profile extends Component {
 		    						</div>
 		    					</div>
 		    					<div className="inner-div">
-			    						<h2 className="dash_title"> Company Name</h2>
-			    						<AutosizeInput type="text" name="companyName" value={this.state.companyName} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
+		    						<h2 className="dash_title">Name</h2>
+		    						<AutosizeInput type="text" name="firstName" value={this.state.firstName} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
+		    						<AutosizeInput type="text" name="lastName" value={this.state.lastName} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
+		    					</div>
+		    				</div>
+		    				<div>
+		    					<div className="inner-div">
+			    						<h2 className="dash_title">Affiliated Institution</h2>
+			    						<AutosizeInput type="text" name="affiliatedInstitution" value={this.state.affiliatedInstitution} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
+			    				</div>
+		    					<div className="inner-div">
+		    						<h2 className="dash_title">Residing Country</h2>
+		    						<AutosizeInput type="text" name="residingCountry" value={this.state.residingCountry} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
 			    				</div>
 		    				</div>
 		    				<div>
@@ -203,41 +207,6 @@ class Profile extends Component {
 		    				</div>
 		    			</div>
 		    			<Button raised accent className="Settings__action-btn" onClick={this.handleSubmit}>Update Account Settings 
-		    			<Spinner singleColor={true} style={{
-		    				display: this.props.isWaiting ? 'inline-block' : 'none'
-		    			}}/></Button>
-		    		</Cell>
-		    	</div>
-			}
-			{
-				(type === 'delegate') &&
-				<div className="DashContent__inner">
-		    		<Cell className="Settings__main" col={10} phone={4} tablet={8}>
-		    			<h2 className="dash_title">Delegate Details</h2>
-		    			<div className="Settings__main--big">
-		    				<div>
-		    					<div className="inner-div">
-		    						<h2 className="dash_title">Title</h2>
-		    						<AutosizeInput type="text" name="title" value={this.state.title} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-		    					</div>
-		    					<div className="inner-div">
-		    						<h2 className="dash_title">Name</h2>
-		    						<AutosizeInput type="text" name="firstName" value={this.state.firstName} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-		    						<AutosizeInput type="text" name="lastName" value={this.state.lastName} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-		    					</div>
-		    				</div>
-		    				<div>
-		    					<div className="inner-div">
-		    						<h2 className="dash_title">Username</h2>
-		    						<AutosizeInput type="text" name="username" value={this.state.username} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-		    					</div>
-		    					<div className="inner-div">
-		    						<h2 className="dash_title">Email Id</h2>
-		    						<AutosizeInput type="email" name="email" value={this.state.email} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-		    					</div>
-		    				</div>
-		    			</div>
-		    			<Button raised accent className="Settings__action-btn" onClick={this.handleSubmit}>Update Delegate 
 		    			<Spinner singleColor={true} style={{
 		    				display: this.props.isWaiting ? 'inline-block' : 'none'
 		    			}}/></Button>

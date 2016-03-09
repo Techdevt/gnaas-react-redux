@@ -1,8 +1,5 @@
 import React                   from 'react';
-import  TodosView              from 'components/TodosView';
-import TodosForm               from 'components/TodosForm';
 import { bindActionCreators }  from 'redux';
-import * as TodoActions        from 'actions/TodoActions';
 import { connect }             from 'react-redux'; 
 
 class Home extends React.Component{
@@ -15,10 +12,7 @@ class Home extends React.Component{
 
 		return (
 			<div id="todo-list">
-				<TodosView todos={todos}
-				 {...bindActionCreators(TodoActions, dispatch)} />
-				<TodosForm 
-					{...bindActionCreators(TodoActions, dispatch)} />
+				<h3>Home</h3>
 			</div>
 		);
 	}

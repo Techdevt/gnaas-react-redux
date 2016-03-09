@@ -2,7 +2,7 @@
 
 import mongoose from 'mongoose';
 
-let ShopperSchema = mongoose.Schema({
+let StudentSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
@@ -24,12 +24,4 @@ let ShopperSchema = mongoose.Schema({
     }
 });
 
-ShopperSchema.methods.addOrder = () => {
-
-};
-
-ShopperSchema.methods.addWish = () => {
-
-};
-
-module.exports = exports = mongoose.model('Shopper', ShopperSchema);
+module.exports = exports = mongoose.model('Student', StudentSchema);

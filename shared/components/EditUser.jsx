@@ -22,7 +22,7 @@ export default class Settings extends Component{
 		super(props);
 		this.state = {
 			selectedTab: 0,
-			tabs: ['profile', 'contact-details', 'billing'],
+			tabs: ['profile', 'contact-details'],
 			$dirty: false
 		};
 	}
@@ -35,44 +35,23 @@ export default class Settings extends Component{
 		this.currUserType = this.getType(user);
 
 		const isOwnAccount = ( id === user._id);
-		const isAccountDelegate = !isOwnAccount && this.checkDelegate();
 		const isUserAccount = !isOwnAccount && this.checkUser();
 
-		const userToEdit = this.getUser({isOwnAccount, isAccountDelegate, isUserAccount});
+		const userToEdit = this.getUser({isOwnAccount, isUserAccount});
 		this.type = type;
 		this.user = userToEdit;
-		this.checks = {isOwnAccount, isAccountDelegate, isUserAccount};
+		this.checks = {isOwnAccount, isUserAccount};
 		
 		this.setState({
 			selectedTab: this.state.tabs.indexOf(activeState)
 		});
 	}
 
-	checkDelegate = () => {
-		const { user, location } = this.props;
-		const { id, type } = location.query;
-
-
-
-		if( type !== 'delegate' ) return false;
-		if( this.currUserType !== 'merchant' ) return false;
-
-		if(user.roles.merchant.delegates.length === 0) return false;
-
-		const found = user.roles.merchant.delegates.findIndex((delegate) => {
-			return id === delegate._id;
-		});
-
-		this.delegatePos = found;
-
-		return found !== -1;
-	};
-
 	checkUser = () => {
 		const { user, location, users } = this.props;
 		const { id, type } = location.query;
 
-		if( !type in ['admin', 'merchant', 'delegate', 'shopper'] ) return false;
+		if( !type in ['admin', 'admin', 'student'] ) return false;
 		const index = users.findIndex((item) => {
 			return item._id === id;
 		});
@@ -89,8 +68,6 @@ export default class Settings extends Component{
 		const { user, users } = this.props;
 		if(params.isOwnAccount) {
 			return this.props.user;
-		} else if(params.isAccountDelegate && (this.delegatePos !== undefined)) {
-			return user.roles.merchant.delegates[this.delegatePos];
 		} else if( params.isUserAccount && (this.userIndex !== undefined)){
 			return users[this.userIndex];
 		}
@@ -150,21 +127,10 @@ export default class Settings extends Component{
 		
 		return (
 			<div className="Settings">
-				{
-					( type === 'shopper' || type === 'delegate' || type === 'admin') &&
-					<Tabs activeTab={this.state.selectedTab} onChange={this.selectTab} ripple className="Settings__tabs">
-				        <Tab>Profile</Tab>
-				        <Tab>Contact Details</Tab>
-				    </Tabs>
-				}
-				{
-					( type === 'merchant' ) &&
-					<Tabs activeTab={this.state.selectedTab} onChange={this.selectTab} ripple className="Settings__tabs">
-				        <Tab>Profile</Tab>
-				        <Tab>Contact Details</Tab>
-				        <Tab>Billings</Tab>
-				    </Tabs>
-				}
+				<Tabs activeTab={this.state.selectedTab} onChange={this.selectTab} ripple className="Settings__tabs">
+			        <Tab>Profile</Tab>
+			        <Tab>Contact Details</Tab>
+			    </Tabs>
 			    <section className="Settings__Content grid">
 			    	{ this.props.children && React.cloneElement( this.props.children, {
 			    		$dirty: this.state.$dirty,

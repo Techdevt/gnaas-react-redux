@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 //edit step one
-import StepOne from './StepOneSell';
+import StepOne from './StepOneAlumni';
+import StepOneBasic from './StepOne';
 import StepTwo from './StepTwo';
 import StepThree from './StepThree';
 //add merchant account payment information step 4

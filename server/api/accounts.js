@@ -1,10 +1,9 @@
 'use strict';
 
 import User from './models/user';
-import Merchant from './models/merchant';
-import Shopper from './models/shopper';
+import Alumni from './models/alumni';
+import Student from './models/student';
 import Admin from './models/admin';
-import Delegate from './models/delegate';
 import config from '../../config/defaults';
 import jwt from 'jsonwebtoken';
 import {
@@ -20,7 +19,6 @@ let outcome = {
 };
 
 const adminPermissions = ['adminAccounts', 'userAccounts'];
-const delegateRoles = ['Inventory Management', 'Sales', 'Customer Service'];
 
 export function validate(userObject) {
     return new Promise(function(resolve, reject) {
@@ -104,8 +102,6 @@ export function createUser(userObject) {
                 email: userObject.email.toLowerCase(),
                 isActive: true,
                 location: userObject.location,
-                state: userObject.state,
-                postCode: userObject.postcode,
                 address: userObject.address
             };
 
@@ -117,19 +113,16 @@ export function createUser(userObject) {
     });
 }
 
-export function createAccount(userObject, id) {
+export function createAccount(userObject) {
     switch (userObject.action.type) {
-        case 'CREATE_MERCHANT':
-            return createMerchant(userObject);
+        case 'CREATE_ALUMNI':
+            return createAlumni(userObject);
             break;
         case 'CREATE_ADMIN':
             return createAdmin(userObject);
             break;
-        case 'CREATE_SHOPPER':
-            return createShopper(userObject);
-            break;
-        case 'CREATE_DELEGATE':
-            return createDelegate(userObject, id);
+        case 'CREATE_STUDENT':
+            return createStudent(userObject);
             break;
         default:
             return Promise.reject('Invalid_Action');
@@ -137,15 +130,17 @@ export function createAccount(userObject, id) {
     }
 }
 
-export function createMerchant(userObject) {
+export function createAlumni(userObject) {
     return new Promise(function(resolve, reject) {
         createUser(userObject).then(function(user) {
             let fieldsToSet = {
                 user: user._id,
-                companyName: userObject.companyName,
-                phone: userObject.phone,
-                isVerified: true,
-                delegates: []
+                affiliatedInstitution: userObject.affiliatedInstitution,
+                residingCountry: userObject.residingCountry,
+                title: userObject.title,
+                firstName: userObject.firstName,
+                lastName: userObject.lastName,
+                isVerified: true
             };
 
             if (config.requireAccountVerification) {
@@ -154,25 +149,22 @@ export function createMerchant(userObject) {
                     fieldsToSet.isVerified = false;
                     fieldsToSet.verificationToken = hash;
 
-                    Merchant.create(fieldsToSet, function(err, merchant) {
+                    Alumni.create(fieldsToSet, function(err, alumni) {
                         if (err) reject(err);
-
-                        user.roles.merchant = merchant._id;
+                        user.roles.alumni = alumni._id;
                         user.save(function(err, user) {
                             if (err) reject(err);
-
-                            resolve(merchant);
+                            resolve(alumni);
                         });
                     });
                 });
             } else {
-                Merchant.create(fieldsToSet, function(err, merchant) {
+                Alumni.create(fieldsToSet, function(err, alumni) {
                     if (err) reject(err);
-
-                    user.roles.merchant = merchant._id;
+                    user.roles.alumni = alumni._id;
                     user.save(function(err, user) {
                         if (err) reject(err);
-                        resolve(merchant);
+                        resolve(alumni);
                     });
                 });
             }
@@ -208,7 +200,7 @@ export function createAdmin(userObject) {
     });
 }
 
-export function createShopper(userObject) {
+export function createStudent(userObject) {
     return new Promise(function(resolve, reject) {
         createUser(userObject).then(function(user) {
             let fieldsToSet = {
@@ -229,114 +221,31 @@ export function createShopper(userObject) {
                     fieldsToSet.isVerified = false;
                     fieldsToSet.verificationToken = hash;
 
-                    Shopper.create(fieldsToSet, function(err, shopper) {
+                    Student.create(fieldsToSet, function(err, student) {
                         if (err) reject(err);
 
-                        user.roles.shopper = shopper._id;
+                        user.roles.student = student._id;
                         user.save(function(err, user) {
                             if (err) reject(err);
 
-                            resolve(shopper);
+                            resolve(student);
                         });
                     });
                 });
             } else {
-                Shopper.create(fieldsToSet, function(err, shopper) {
+                Student.create(fieldsToSet, function(err, student) {
                     if (err) reject(err);
 
-                    user.roles.shopper = shopper._id;
+                    user.roles.student = student._id;
                     user.save(function(err, user) {
                         if (err) reject(err);
 
-                        resolve(shopper);
+                        resolve(student);
                     });
                 });
             }
         }, function(err) {
             reject(err);
-        });
-    });
-}
-
-export function createDelegate(delegateObject, merchantId) {
-
-    return new Promise(function(resolve, reject) {
-        Merchant.findOne({
-            _id: merchantId
-        }, function(err, merchant) {
-            if (err) {
-                reject(err);
-            }
-            if (!merchant) {
-                reject('Invalid Merchant Id' + merchantId);
-            }
-
-            createUser(delegateObject).then(function(user) {
-                let fieldsToSet = {
-                    user: user._id,
-                    company: {
-                        id: merchantId
-                    },
-                    phone: delegateObject.phone,
-                    title: delegateObject.title,
-                    firstName: delegateObject.firstName,
-                    lastName: delegateObject.lastName
-                };
-
-                fieldsToSet.roles = Object.keys(delegateObject.roles).map(function(key) {
-                    return {
-                        name: key,
-                        permit: true
-                    }
-                }) || [];
-
-                if (config.requireAccountVerification) {
-                    User.createVerificationToken((err, token, hash) => {
-                        if (err) reject(err);
-                        fieldsToSet.isVerified = false;
-                        fieldsToSet.verificationToken = hash;
-
-                        Delegate.create(fieldsToSet, function(err, delegate) {
-                            if (err) {
-                                reject(err);
-                            }
-
-                            merchant.delegates.push(user);
-                            merchant.save(function(err, merchant) {
-                                user.roles.delegate = delegate._id;
-                                user.save(function(err, user) {
-                                    if (err) reject(err);
-                                    user.roles.delegate = delegate;
-                                    resolve({...user.toJSON(), delegate: delegate, merchantId: merchant.user, verificationToken: delegate.verificationToken
-                                    });
-                                });
-                            });
-                        });
-                    });
-                } else {
-                    Delegate.create(fieldsToSet, function(err, delegate) {
-                        if (err) {
-                            reject(err);
-                        }
-
-                        merchant.delegates.push(user);
-                        merchant.save(function(err, merchant) {
-                            user.roles.delegate = delegate._id;
-                            user.save(function(err, user) {
-                                if (err) reject(err);
-                                user.roles.delegate = delegate;
-                                resolve({...user.toJSON(), delegate: delegate, merchantId: merchant.user
-                                });
-                            });
-                        });
-                    });
-                }
-
-
-
-            }, function(err) {
-                reject(err);
-            });
         });
     });
 }
@@ -441,7 +350,7 @@ export function deleteUser(userId, password, acToDelete) {
                     switch (type.toUpperCase()) {
                         case 'ADMIN':
                             Admin.findOne({
-                                _id: issuer.roles[type]
+                                _id: issuer.roles[type]._id
                             }, function(err, bAdmin) {
                                 if (acToDelete) {
                                     getUserType({
@@ -483,40 +392,7 @@ export function deleteUser(userId, password, acToDelete) {
                                                     return reject('unauthorized');
                                                 }
                                                 break;
-                                            case 'MERCHANT':
-                                                //admin must have userAccounts permissions
-                                                let hasUserPermission = bAdmin.hasPermissionTo('userAccounts');
-                                                if (hasUserPermission) {
-                                                    User.findOne({
-                                                        _id: acToDelete
-                                                    }, function(err, merchant) {
-                                                        if (err) {
-                                                            reject(err);
-                                                        }
-
-                                                        Merchant.remove({
-                                                            _id: merchant.roles[_type]
-                                                        }, function(err, removeCount) {
-                                                            if (!removeCount) {
-                                                                reject('delete_failed');
-                                                            }
-
-                                                            mongoose.model('Delegate').find({
-                                                                'company.id': merchant.roles[type]
-                                                            }).remove(function(err, removeCount) {
-                                                                if (err) return reject(err);
-                                                                resolve({
-                                                                    message: 'success'
-                                                                });
-                                                            });
-                                                        });
-                                                    });
-                                                } else {
-                                                    return reject('unauthorized');
-                                                }
-                                                break;
-                                            case 'SHOPPER':
-                                            case 'DELEGATE':
+                                            default:
                                                 //admin must have user accounts permissions
                                                 if (hasUserPermission) {
                                                     User.remove({
@@ -543,8 +419,6 @@ export function deleteUser(userId, password, acToDelete) {
                                                     return reject('unauthorized');
                                                 }
                                                 break;
-                                            default:
-                                                break;
                                         }
                                     }, function(err) {
                                         return reject(err);
@@ -555,47 +429,14 @@ export function deleteUser(userId, password, acToDelete) {
                                 }
                             });
                             break;
-                        case 'MERCHANT':
-                            if (acToDelete) {
-                                //merchant is deleting delegate..make sure delegate company id matches merchant id
-                            } else {
-                                //merchant is deleting own account..delete account..delete all delegates
-                                User.remove({
-                                    _id: userId
-                                }, function(err, removeCount) {
-                                    if (err) {
-                                        reject(err);
-                                    }
-                                    if (!removeCount) {
-                                        reject('delete_failed');
-                                    }
-
-                                    //edit after deleting merchant account
-                                    mongoose.model(toTitleCase(type)).findOne({
-                                        _id: issuer.roles[type]
-                                    }, function(err, merchant) {
-                                        if (err) return reject(err);
-
-                                        mongoose.model('Delegate').find({
-                                            'company.id': merchant._id
-                                        }).remove(function(err, removeCount) {
-                                            if (err) return reject(err);
-                                            resolve({
-                                                message: 'success'
-                                            });
-                                        });
-                                    });
-                                });
-                            }
-                            break;
-                        case 'SHOPPER':
+                        default:
                             User.remove({
                                 _id: issuer._id
                             }, function(err, result) {
                                 if (err) reject('delete_failed');
                                 //delete account
                                 mongoose.model(toTitleCase(type)).findOne({
-                                    _id: issuer.roles[type]
+                                    _id: issuer.roles[type]._id
                                 }).remove(function(err, res) {
                                     if (err) return reject('delete_failed');
                                     return resolve({
@@ -604,8 +445,6 @@ export function deleteUser(userId, password, acToDelete) {
                                 });
                             });
                             break;
-                        default:
-                            return reject('delete failed');
                     }
                 }, function(err) {
                     reject(err);
@@ -623,13 +462,11 @@ export function editUser(userId, fieldsToEdit, acToEdit) {
 
        possible edit scenarios:
        admin adding roles to another admin => must have admin accounts permission
-       admin editing other accounts => adding roles to delegates, etc
+       admin editing other accounts
        admin resetting passwords of other users
 
-       merchants adding roles to delegates
-       other accounts editing themselves
+       users editing themselves
     */
-
     return new Promise(function(resolve, reject) {
 
         //do validation here
@@ -748,55 +585,8 @@ export function editUser(userId, fieldsToEdit, acToEdit) {
                                                 return reject('unauthorized');
                                             }
                                             break;
-                                        case 'DELEGATE':
-                                            //perform role validate if role exists
-                                            if (fieldsToEdit.hasOwnProperty('roles')) {
-                                                let validRoles = fieldsToEdit.roles.filter(function(role) {
-                                                    return delegateRoles.indexOf(role.name) !== -1;
-                                                });
-                                                indirectEdits.roles = validRoles;
-                                                delete fieldsToEdit.roles;
-                                            }
-
-                                            if (permit) {
-                                                User.findByIdAndUpdate(acToEdit, fieldsToEdit, {
-                                                        new: true
-                                                    },
-                                                    function(err, updatedDelegate) {
-                                                        if (err) return reject(err);
-                                                        Delegate.findByIdAndUpdate(updatedDelegate.roles.delegate, fieldsToEdit, {
-                                                            new: true
-                                                        }, function(err, res) {
-                                                            if (err) return reject(err);
-                                                            //do role update
-                                                            if (indirectEdits.hasOwnProperty('roles')) {
-                                                                res.roles = indirectEdits.roles;
-                                                                res.save(function(err, updated) {
-                                                                    if (err) return reject(err);
-
-                                                                    updatedDelegate.roles.delegate = updated;
-                                                                    return resolve({
-                                                                        message: 'update_success',
-                                                                        type: 'adminEditUser',
-                                                                        user: updatedDelegate
-                                                                    });
-                                                                });
-                                                            } else {
-                                                                updatedDelegate.roles.delegate = res;
-                                                                return resolve({
-                                                                    message: 'update_success',
-                                                                    type: 'adminEditUser',
-                                                                    user: updatedDelegate
-                                                                });
-                                                            }
-                                                        });
-                                                    });
-                                            } else {
-                                                return reject('unauthorized');
-                                            }
-                                            break;
                                         default:
-                                            //admin is editing either shopper or merchant
+                                            //admin is editing either student or alumni
                                             if (permit) {
                                                 User.findByIdAndUpdate(acToEdit, fieldsToEdit, {
                                                     new: true
@@ -853,10 +643,9 @@ export function editUser(userId, fieldsToEdit, acToEdit) {
                             const adminId = (typeof updatedUser.roles.admin === 'object') ? updatedUser.roles.admin._id:
                                             updatedUser.roles.admin;
 
-                            Admin.findByIdAndUpdate(adminId, fieldsToEdit, function(err, updateAdmin) {
+                            Admin.findByIdAndUpdate(adminId, fieldsToEdit, { new: true }, function(err, updateAdmin) {
                                 if (err) return reject(err);
                                 let hasAdminPermission = updateAdmin.hasPermissionTo('adminAccounts');
-
                                 if (hasAdminPermission) {
                                     if (indirectEdits.hasOwnProperty('permissions')) {
                                         updateAdmin.permissions = indirectEdits.permissions;
@@ -910,100 +699,12 @@ export function editUser(userId, fieldsToEdit, acToEdit) {
                         });
                     }
                     break;
-                case 'MERCHANT':
-                    if (fieldsToEdit.hasOwnProperty('password')) {
-                        //add password error to return object
-                        delete fieldsToEdit.password;
-                    }
-
-                    if (acToEdit) {
-                        //merchant is editing store delegates
-                        //check to see if merchant owns delegate
-                        let indirectEdits = {};
-                        if (fieldsToEdit.hasOwnProperty('roles')) {
-                            //merchant is adding roles to delegate...validate role..then add
-                            let validRoles = fieldsToEdit.roles.filter(function(role) {
-                                return delegateRoles.indexOf(role.name) !== -1;
-                            });
-                            indirectEdits.roles = validRoles;
-                            delete fieldsToEdit.roles;
-                        }
-
-                        User.findByIdAndUpdate(acToEdit, fieldsToEdit, {
-                            new: true
-                        }, function(err, user) {
-                            if (err) return reject(err);
-
-
-                            Delegate.findByIdAndUpdate(user.roles.delegate, fieldsToEdit, {
-                                    new: true
-                                },
-                                function(err, delegate) {
-                                    if (err) return reject(err);
-
-                                    if (indirectEdits.hasOwnProperty('roles')) {
-                                        delegate.roles = indirectEdits.roles;
-                                        delegate.save(function(err, changedDelegate) {
-                                            if (err) return reject(err);
-                                            user.roles.delegate = changedDelegate;
-                                            return resolve({
-                                                message: 'update_success',
-                                                delegate: user,
-                                                type: 'merchantEditDelegate'
-                                            });
-                                        });
-                                    } else {
-                                        user.roles.delegate = delegate;
-                                        return resolve({
-                                            message: 'update_success',
-                                            delegate: user,
-                                            type: 'merchantEditDelegate'
-                                        });
-                                    }
-                                });
-                        });
-                    } else {
-                        //merchant is editing his own account
-                        User.findByIdAndUpdate(userId, fieldsToEdit, {
-                            new: true
-                        }, function(err, updatedMerchant) {
-                            if (err) return reject(err);
-
-                            Merchant.findByIdAndUpdate(updatedMerchant.roles.merchant,
-                                fieldsToEdit, {
-                                    new: true,
-                                    populate: {
-                                        path: 'delegates'
-                                    }
-                                },
-                                function(err, res) {
-                                    if (err) return reject(err);
-                                    updatedMerchant.roles.merchant = res;
-                                    jwt.sign(updatedMerchant.toObject(), config.secret, {
-                                        algorithm: 'HS256',
-                                        expiresIn: '7d'
-                                    }, function(token) {
-                                        //return token
-                                        return resolve({
-                                            user: updatedMerchant,
-                                            token: token,
-                                            message: 'update_success'
-                                        });
-                                    });
-                                });
-                        });
-                    }
-                    break;
                 default:
                     if (fieldsToEdit.hasOwnProperty('password')) {
-                        //regular user cant edit his own password
+                        //regular user cant edit his own password directly, has to reset password following email authorization
                         delete fieldsToEdit.password;
                     }
-                    if (fieldsToEdit.hasOwnProperty('roles')) {
-                        //regular user cant edit roles
-                        delete fieldsToEdit.roles;
-                    }
-
+                
                     User.findByIdAndUpdate(userId, fieldsToEdit, {
                             new: true
                         },

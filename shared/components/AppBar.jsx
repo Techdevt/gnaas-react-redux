@@ -95,7 +95,7 @@ export default class AppBar extends Component {
                                     <Link to="contacts" className='AppBar__menu-item-nav'>Gift Cards</Link>
                                 </div>
                                 <div >
-                                    <Link to="sell" className='AppBar__menu-item-nav'>Sell</Link>
+                                    <Link to="alumni" className='AppBar__menu-item-nav'>Alumni</Link>
                                 </div>
                                 <div >
                                     <Link to="contacts" className='AppBar__menu-item-nav'>Help</Link>

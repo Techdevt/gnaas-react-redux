@@ -15,19 +15,6 @@ export default function AuthReducer(state = defaultState, action) {
         case 'CREATE_USER_REQUEST':
             return state.set('isWaiting', true);
         case 'CREATE_USER':
-            if (action.res.data.type === 'delegate') {
-                return state.withMutations((state) => {
-                    state
-                        .updateIn(['user', 'roles', 'merchant', 'delegates'], arr => {
-                            return arr.concat(action.res.data.delegate);
-                        })
-                        .merge({
-                            isWaiting: false,
-                            authSuccess: true,
-                            message: `successfully created delegate. username: ${action.res.data.username} password: ${action.res.data.password}`
-                        });
-                });
-            }
             return state.merge({
                 isWaiting: false,
                 shouldRedirect: true,
@@ -84,24 +71,6 @@ export default function AuthReducer(state = defaultState, action) {
             });
         case 'EDIT_USER':
             //add edited result object so we can update which fields succeeded
-            //if delegate is editing? change
-            if(action.res.data.type === 'merchantEditDelegate') {
-                return state.withMutations((state) => {
-                    state
-                        .updateIn(['user', 'roles', 'merchant', 'delegates'], arr => {
-                            const index = arr.findIndex((item) => {
-                                return item.get('_id') === action.res.data.delegate._id;
-                            });
-                            return arr.set(index, Immutable.fromJS(action.res.data.delegate));
-                        })
-                        .merge({
-                            token: action.res.data.token,
-                            message: 'Delegate successfully edited',
-                            isWaiting: false,
-                            authSuccess: true
-                        })
-                    });
-            }
             return state.merge({
                 isAuthenticated: true,
                 user: action.res.data.user,

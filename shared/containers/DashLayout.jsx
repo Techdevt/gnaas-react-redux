@@ -25,11 +25,9 @@ export default class DashLayout extends Component {
     generateLinks() {
         const { type } = this.props; 
         const navLinks = [
-            {to: '/dashboard/settings', name: 'Settings', allow: ['merchant', 'delegate', 'shopper', 'admin']},
-            {to: '/dashboard/delegates', name: 'Delegates', allow: ['merchant']},
+            {to: '/dashboard/settings', name: 'Settings', allow: ['alumni', 'student', 'admin']},
             {to: '/dashboard/users', name: 'Users', allow: ['admin']},
-            {to: '/dashboard/categories', name: 'Categories', allow: ['admin']},
-            {to: '/dashboard/catalog', name: 'Catalog', allow: ['merchant']}
+            {to: '/dashboard/post', name: 'Post', allow: ['admin']}
         ];
         const links = navLinks.filter(function(link) {
             return link.allow.indexOf(type) !== -1;
@@ -47,7 +45,6 @@ export default class DashLayout extends Component {
         const { user, type } = this.props;
         const passedAvatar = user.roles[type].avatarUrl[1];
         const fullName = `${user.roles[type].firstName} ${user.roles[type].lastName}`;
-        const companyName = user.roles[type].companyName;
         const links = this.generateLinks();
 
         const currentRoute =  this.props.routes[this.props.routes.length-1];
@@ -58,7 +55,7 @@ export default class DashLayout extends Component {
                     <Drawer onClick={this.toggleDrawer}>
                         <Header className="Drawer__Header">
                             <User className="Drawer__Header_avatar" passedAvatar={passedAvatar}/>
-                            <span className="Drawer__Header_title">{ (type === 'merchant') ? companyName: fullName}</span>
+                            <span className="Drawer__Header_title">{fullName}</span>
                             <IconButton name="home" className="Drawer__Header_home" onClick={this.goToHome}/>
                         </Header>
                         <Navigation>

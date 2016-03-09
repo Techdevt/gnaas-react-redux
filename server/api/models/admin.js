@@ -6,12 +6,14 @@ let AdminSchema = mongoose.Schema({
 	user: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
 	firstName: String,
 	lastName: String,
+	homePhone: String,
+    phone: String,
 	permissions: [{
       name: String,
       permit: Boolean
     }],
     avatarUrl: [String]
-});
+}); 
 
 AdminSchema.methods.hasPermissionTo = function(something) {
 	const found = this.permissions.findIndex((item) => {

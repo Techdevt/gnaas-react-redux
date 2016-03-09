@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Cell } from 'react-mdl';
-import steps from 'components/Signup/Sell';
+import steps from 'components/Signup/Alumni';
 import Multistep from 'components/Signup/Multistep';
 import { createUser } from 'actions/AuthActions';
 import { connect } from 'react-redux';
@@ -16,8 +16,8 @@ export default class Sell extends Component {
 			username: '',
 			password: '',
 			location: '',
-			state: '',
-			postcode: '',
+			affiliatedInstitution: '',
+			residingCountry: '',
 			address: ''
 		};
 		this.isMessageActive = false;
@@ -80,7 +80,7 @@ export default class Sell extends Component {
 
 		const { dispatch } = this.props; 
 		dispatch(createUser({...this.state, action: {
-            type: 'CREATE_MERCHANT'
+            type: 'CREATE_ALUMNI'
         }}));
 	}; 
 
@@ -90,7 +90,7 @@ export default class Sell extends Component {
 			<div className="Signup">
 				<Cell col={6} tablet={6} phone={4} className="Signup__container mdl-shadow--6dp">
 					<div className="Signup__container--header">
-						<h4>Create a Shop</h4>
+						<h4>Register as Alumni</h4>
 					</div>
 					<div className="Signup__container--body">
 						<Multistep steps={steps} onCallbackParent={this.saveData} fieldValues={this.state} onSignup={this.onSignup} isWaiting={Auth.get('isWaiting')}/>

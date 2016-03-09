@@ -9,7 +9,7 @@ class StepThree extends Component {
 	render() {
 		return (
 			<form className="Signup__container--step" onSubmit={this.props.onCallbackParent.bind(this, this.state, this.props.onSignup.bind(this, this.props.next))}>
-				<div className="Signup__container--body-fieldrow doubly">
+				<div className="Signup__container--body-fieldrow">
 					
 						<Textfield
 						    label="Location"
@@ -19,25 +19,6 @@ class StepThree extends Component {
 						    defaultValue={this.props.fieldValues.location}
 						/>
 					
-					
-						<Textfield
-						    label="State"
-						    floatingLabel
-						    name="state"
-						    onChange={this.onFieldChanged}
-						    defaultValue={this.props.fieldValues.state}
-						/>
-					
-				</div>
-				<div className="Signup__container--body-fieldrow">
-					
-						<Textfield
-						    label="Postal Code"
-						    floatingLabel
-						    name="postcode"
-						    onChange={this.onFieldChanged}
-						    defaultValue={this.props.fieldValues.postcode}
-						/>
 				</div>
 					
 				<div className="Signup__container--body-fieldrow">

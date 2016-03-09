@@ -5,9 +5,9 @@ export default class footer extends Component {
 	render() {
         return (
 		    <Footer size="mini">
-			    <FooterSection type="left" logo="MartsDirect®" className="grid">
+			    <FooterSection type="left" logo="GNAAS®" className="grid">
 			        <FooterLinkList>
-			            <a href="#">Privacy & Terms</a>
+			            <a href="#">About Us</a>
 			        </FooterLinkList>
 			    </FooterSection>
 			</Footer>

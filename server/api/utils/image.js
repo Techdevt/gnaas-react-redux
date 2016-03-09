@@ -3,6 +3,7 @@ import fs from 'fs';
 import _ from 'lodash';
 import async from 'async';
 import FileUtils from './file';
+import _path from 'path';
 
 export default class ImageProcessor {
     execute = (images, dimension) => {
@@ -34,11 +35,11 @@ export default class ImageProcessor {
                                                     .batch()
                                                     .crop(size, size)
                                                     .scale((dim / size) || 0.5)
-                                                    .writeFile(`server/uploads/${name}×${dim}.${type}`, function(err) {
+                                                    .writeFile(_path.join(appRoot, `/server/uploads/${name}×${dim}.${type}`), function(err) {
                                                         if (err) return callback(err);
 
                                                         return callback(null, {
-                                                            path: `server/uploads/${name}×${dim}.${type}`,
+                                                            path: _path.join(appRoot, `/server/uploads/${name}×${dim}.${type}`),
                                                             name: `${name}×${dim}.${type}`
                                                         });
                                                     });

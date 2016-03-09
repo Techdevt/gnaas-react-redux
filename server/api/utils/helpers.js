@@ -3,18 +3,23 @@
 import config from '../../../config/defaults';
 import sendEmail from './email';
 import {
-    validate, duplicateUsernameCheck, duplicateEmailCheck, createUser, resetOutcome, createAccount,
-    createVerificationToken, hasErrors, deleteUser, editUser
+    validate,
+    duplicateUsernameCheck,
+    duplicateEmailCheck,
+    createUser,
+    resetOutcome,
+    createAccount,
+    createVerificationToken,
+    hasErrors,
+    deleteUser,
+    editUser
 }
 from '../accounts';
-import {
-    refreshUserSession
-}
-from './auth';
 import httpStatus from 'http-status';
 import User from '../models/user';
 import FileUtils from './file';
 import ImageUtils from './image';
+import path from 'path';
 
 export function sendActivationEmail(req, res, options) {
     return new Promise(function(resolve, reject) {
@@ -65,113 +70,53 @@ export function sendPasswordResetMail(req, res, options) {
 
 export function SignUp(req, res) {
     let userModel = req.body;
+    return createUser(userModel);
 
-    if (userModel.action.type === 'CREATE_DELEGATE') {
-        userModel = generateDelegate(userModel);
-        createUser(userModel, userModel.merchantId);
-    } else {
-        createUser(userModel);
-    }
-
-    function createUser(userObject, id = null) {
+    function createUser(userObject) {
         validate(userModel).then(function(userObject) {
             duplicateUsernameCheck(userObject).then(function(userObject) {
                 duplicateEmailCheck(userObject).then(function(userObject) {
-                    createAccount(userModel, id).then(function(account) {
+                    createAccount(userModel).then(function(account) {
                         //save avatar to user directory using user id
                         let ErrorsOccured = {};
 
-                        try {
-                            const fileHandler = new FileUtils();
-                            if (req.file) {
-                                let sourceFile = req.file.path;
-                                let destFile = `uploads/${account._id}/${req.file.filename}`;
+                        const fileHandler = new FileUtils();
+                        if (req.file) {
+                            let sourceFile = req.file.path;
+                            let destFile = path.join(appRoot, `/server/uploads/${account.user}/${req.file.filename}`);
 
-                                fileHandler.move(sourceFile, destFile).then(function() {
-                                    account.avatarUrl = destFile;
-                                    if (typeof account === 'object' && account.hasOwnProperty('delegate')) {
-                                        account.delegate.avatarUrl = destFile;
-                                        account.delegate.save(function(err, res) {
-                                            if (err) return reject(err);
-                                            account.roles.delegate = res;
-                                        });
-                                    } else {
-                                        account.save(function(err, res) {
-                                            if (err) return reject(err);
-                                        });
-                                    }
-                                }, function(err) {
-                                    //send created error to user with errors
-                                    ErrorsOccured.avatar = err;
+                            fileHandler.move(sourceFile, destFile).then(function() {
+                                account.avatarUrl = destFile;
+                                account.save(function(err, res) {
+                                    if (err) return reject(err);
+                                    //continue
                                 });
-                            } else {
-                                let destFile = '/images/gravatar.png';
-                                if (typeof account === 'object' && account.hasOwnProperty('delegate')) {
-                                    account.delegate.avatarUrl = destFile;
-                                    account.delegate.save(function(err, res) {
-                                        if (err) return reject(err);
-                                        account.roles.delegate = res;
-                                    });
-                                } else {
-                                    account.avatarUrl = [destFile];
-                                    account.save(function(err, res) {
-                                        if (err) return reject(err);
-                                    });
-                                }
-                            }
-                            sendActivationEmail(req, res, {
-                                to: userModel.email,
-                                verificationToken: account.verificationToken,
-                                userId: (account.user) ? account.user.id : account._id
-                            }).then(function(result) {
-                                //?logUserIn
-                                if (userModel.action.type === 'CREATE_DELEGATE') {
-                                    refreshUserSession(req, account.merchantId).then(
-                                        (isSuccess) => {
-                                            delete account.verificationToken;
-                                            delete account.merchantId;
-                                            delete account.delegate;
-
-                                            return res.status(httpStatus.OK).send({
-                                                message: 'success',
-                                                type: 'delegate',
-                                                password: userModel.password,
-                                                username: userModel.username,
-                                                delegate: account
-                                            });
-                                        }, (err) => handleError(res, err)
-                                    );
-                                } else {
-                                    return res.status(httpStatus.OK).send({
-                                        message: 'success'
-                                    });
-                                }
-                            }, (err) => {
-                                if (userModel.action.type === 'CREATE_DELEGATE') {
-                                    refreshUserSession(req, account.merchantId).then(
-                                        (isSuccess) => {
-                                            delete account.verificationToken;
-                                            delete account.merchantId;
-                                            delete account.delegate;
-
-                                            return res.status(httpStatus.OK).send({
-                                                message: 'success',
-                                                type: 'delegate',
-                                                password: userModel.password,
-                                                username: userModel.username,
-                                                delegate: account
-                                            });
-                                        }, (err) => handleError(res, err)
-                                    );
-                                } else {
-                                    return res.status(httpStatus.OK).send(Object.assign(ErrorsOccured, {
-                                        message: err
-                                    }));
-                                }
+                            }, function(err) {
+                                //send created error to user with errors
+                                ErrorsOccured.avatar = err;
                             });
-                        } catch (err) {
-                            console.log(err);
+                        } else {
+                            let destFile = '/images/gravatar.png';
+                            account.avatarUrl = destFile;
+                            account.save(function(err, res) {
+                                if (err) return reject(err);
+                                //continue
+                            });
                         }
+                        sendActivationEmail(req, res, {
+                            to: userModel.email,
+                            verificationToken: account.verificationToken,
+                            userId: account.user
+                        }).then(function(result) {
+                            //?logUserIn
+                            return res.status(httpStatus.OK).send({
+                                message: 'success'
+                            });
+                        }, (err) => {
+                            return res.status(httpStatus.OK).send(Object.assign(ErrorsOccured, {
+                                message: err
+                            }));
+                        });
                     }, (err) => handleError(res, err));
                 }, (err) => handleError(res, err));
             }, (err) => handleError(res, err));
@@ -197,18 +142,17 @@ export function editUserAccount(req, res) {
     let acToEdit = req.body.acToEdit;
     delete req.body.acToEdit;
 
-
-    let fieldsToEdit = {...Object.prototype, ...req.body};
+    let fieldsToEdit = {...Object.prototype, ...req.body };
 
     if (req.file) {
         //reset image
         User.resetImage(acToEdit || userId).then(function(resetResult) {
-            //getUsertype, if user is merchant, use different dimensions for image
+            //getUserType, if user is merchant, use different dimensions for image
             //process image 400 * 200 for merchant settings page, and 600 width for merchant store page
             fileHelper(req.file, [50, 100, 200], acToEdit || userId).then(function(result) {
                 fieldsToEdit.avatarUrl = result;
                 editUser(userId, fieldsToEdit, acToEdit).then(function(data) {
-                    if(data.token) {
+                    if (data.token) {
                         req.session.token = data.token;
                         req.session.save((err) => {
                             res.status(httpStatus.OK).send(data);
@@ -227,7 +171,7 @@ export function editUserAccount(req, res) {
         });
     } else {
         editUser(userId, fieldsToEdit, acToEdit).then(function(data) {
-            if(data.token) {
+            if (data.token) {
                 req.session.token = data.token;
                 req.session.save((err) => {
                     res.status(httpStatus.OK).send(data);
@@ -268,7 +212,8 @@ export function fileHelper(images, dimension, userId) {
             result.forEach(function(item) {
                 if (!Array.isArray(item)) {
                     const sourceFile = item.path;
-                    const destFile = `server/uploads/${userId}/${item.name}`;
+                    //use path.join
+                    const destFile = path.join(appRoot, `/server/uploads/${userId}/${item.name}`);
                     fileHandler.move(sourceFile, destFile).then(function(result) {
                         resolve([destFile]);
                     });
@@ -277,12 +222,10 @@ export function fileHelper(images, dimension, userId) {
                     item.forEach(function(i) {
                         promises.push(function(image) {
                             const sourceFile = image.path;
-                            const destFile = `server/uploads/${userId}/${image.name}`;
+                            const destFile = path.join(appRoot, `/server/uploads/${userId}/${image.name}`);
                             return fileHandler.move(sourceFile, destFile);
                         }(i));
                     });
-
-
 
                     Promise.all(promises).then(function(results) {
                         resolve(results);
@@ -305,24 +248,4 @@ export function parseJson(object) {
         });
     }
     return object;
-}
-
-export function generateDelegate(user) {
-    const delegateId = user.delegateId;
-    let possibleValues = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    let password = new Array(8).join('p').split('');
-    let username = new Array(12).join('u').split('');
-
-    user.username = username.map((val) => {
-        const replacePos = Math.random() * possibleValues.length;
-        const randValue = possibleValues.slice(0, replacePos).concat(delegateId).concat(possibleValues.slice(replacePos));
-        return randValue.charAt(Math.floor(Math.random() * randValue.length));
-    }).join('');
-
-    user.password = password.map((val) => {
-        return possibleValues.charAt(Math.floor(Math.random() * possibleValues.length));
-    }).join('');
-
-    return user;
 }

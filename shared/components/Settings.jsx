@@ -9,7 +9,7 @@ export default class Settings extends Component{
 		super(props);
 		this.state = {
 			selectedTab: 0,
-			tabs: ['', 'contact-details', 'billing'],
+			tabs: ['', 'contact-details'],
 			$dirty: false
 		};
 	}
@@ -72,22 +72,11 @@ export default class Settings extends Component{
 		const { type } = this.props;
 		const _this = this;
 		return (
-			<div className="Settings">	
-				{
-					( type === 'shopper' || type === 'admin' || type === 'delegate') &&
-					<Tabs activeTab={this.state.selectedTab} onChange={this.selectTab} ripple className="Settings__tabs">
-				        <Tab>Profile</Tab>
-				        <Tab>Contact Details</Tab>
-				    </Tabs>
-				}
-				{
-					( type === 'merchant' ) &&
-					<Tabs activeTab={this.state.selectedTab} onChange={this.selectTab} ripple className="Settings__tabs">
-				        <Tab>Profile</Tab>
-				        <Tab>Contact Details</Tab>
-				        <Tab>Billings</Tab>
-				    </Tabs>
-				}
+			<div className="Settings">
+				<Tabs activeTab={this.state.selectedTab} onChange={this.selectTab} ripple className="Settings__tabs">
+			        <Tab>Profile</Tab>
+			        <Tab>Contact Details</Tab>
+			    </Tabs>
 			    <section className="Settings__Content grid">
 			    	{ this.props.children && React.cloneElement( this.props.children, {
 			    		$dirty: _this.state.$dirty,

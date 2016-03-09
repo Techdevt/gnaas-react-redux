@@ -54,6 +54,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.set('views', 'server/views');
 app.set('view engine', 'jade');
 app.set('jwtsecret', config.secret);
+global.appRoot = path.resolve(__dirname);
 
 //connect to mongodb
 mongoose.connect(url);

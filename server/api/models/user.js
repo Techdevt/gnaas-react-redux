@@ -31,19 +31,14 @@ let UserSchema = mongoose.Schema({
             ref: 'Admin',
             autopopulate: true
         },
-        shopper: {
+        student: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Shopper',
+            ref: 'Student',
             autopopulate: true
         },
-        merchant: {
+        alumni: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Merchant',
-            autopopulate: true
-        },
-        delegate: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Delegate',
+            ref: 'Alumni',
             autopopulate: true
         }
     },
@@ -55,8 +50,6 @@ let UserSchema = mongoose.Schema({
     resetPasswordToken: String,
     resetPasswordExpires: Date,
     location: String,
-    state: String,
-    postCode: String,
     address: [String]
 });
 
@@ -65,11 +58,11 @@ UserSchema.methods.canPlayRoleOf = (role) => {
         return true;
     }
 
-    if (role === 'shopper' && this.roles.shopper) {
+    if (role === 'student' && this.roles.student) {
         return true;
     }
 
-    if (role === 'merchant' && this.roles.merchant) {
+    if (role === 'alumni' && this.roles.alumni) {
         return true;
     }
 
@@ -212,49 +205,26 @@ UserSchema.statics.verifyUser = function(id, hash, done) {
         _id: id
     }, function(err, user) {
         if (err) return done(err);
-        if (user.roles.shopper) {
-            mongoose.model('Shopper').findOne({
-                _id: user.roles.shopper
-            }, function(err, shopper) {
+        getUserType({_id: id}).then((type) => {
+            mongoose.model(toTitleCase(type))
+            .findById(id, (err, account) => {
                 if (err) return done(err);
-                token = shopper.verificationToken;
+                token = account.verificationToken;
 
                 mongoose.model('User').validatePassword(token, hash, function(err, res) {
                     if (err) return done(err);
                     if (res) {
-                        shopper.isVerified = true;
-                        shopper.save(function(err, shopper) {
+                        account.isVerified = true;
+                        account.save(function(err, user) {
                             if (err) return done(err);
                             return done(null, true);
                         });
                     } else {
                         return done('verification failed');
                     }
-                })
+                });
             });
-        } else if (user.roles.merchant) {
-            mongoose.model('Merchant').findOne({
-                _id: user.roles.merchant
-            }, function(err, merchant) {
-                if (err) return done(err);
-                token = merchant.verificationToken;
-
-                mongoose.model('User').validatePassword(token, hash, function(err, res) {
-                    if (err) return done(err);
-                    if (res) {
-                        merchant.isVerified = true;
-                        merchant.save(function(err, merchant) {
-                            if (err) return done(err);
-                            return done(null, true);
-                        });
-                    } else {
-                        return done('verification failed');
-                    }
-                })
-            });
-        } else {
-            return done('verification failed');
-        }
+        }, err => done('verification failed'));
     });
 };
 

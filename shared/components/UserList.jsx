@@ -46,8 +46,7 @@ class UserList extends Component {
 		this.setState({
 			users: this.props.users.filter((item) => {
 				const type = _this.getType(item);
-				const name = (type === 'merchant') ? item.roles[type].companyName:
-							`${item.roles[type].firstName} ${item.roles[type].lastName}`;
+				const name = `${item.roles[type].firstName} ${item.roles[type].lastName}`;
 				return String(name).toLowerCase().indexOf(query) !== -1;
 			})
 		});
@@ -58,7 +57,7 @@ class UserList extends Component {
 		this.setState({
 			users: this.props.users.filter((item) => {
 				const _type = _this.getType(item);
-				if(type !== '') { 
+				if(type !== '') {
 					return type === _type 
 				} else {
 					return true;
@@ -88,9 +87,8 @@ class UserList extends Component {
                                <Menu target="filter-menu" ripple>
                                		<MenuItem onClick={this.filter.bind(this, '')}>All</MenuItem>
                                		<MenuItem onClick={this.filter.bind(this, 'admin')}>Admins</MenuItem>
-	                                <MenuItem onClick={this.filter.bind(this, 'delegate')}>Delegates</MenuItem>
-                                    <MenuItem onClick={this.filter.bind(this, 'merchant')}>Merchants</MenuItem>
-                                    <MenuItem onClick={this.filter.bind(this, 'shopper')}>Shoppers</MenuItem>
+                                    <MenuItem onClick={this.filter.bind(this, 'alumni')}>Alumni</MenuItem>
+                                    <MenuItem onClick={this.filter.bind(this, 'student')}>Students</MenuItem>
 	                            </Menu>
                             </div>
 						</div>
@@ -101,14 +99,7 @@ class UserList extends Component {
 									<Grid className="Delegate__Item" key={index}>
 										<Cell col={3} className="Delegate__Item_subcontainer">
 										<User passedAvatar={user.roles[type].avatarUrl[1] || user.roles[type].avatarUrl[0]} className="Delegate__Item_avatar" />
-										{
-											(type === 'merchant') &&
-											<span className="Delegate__Item_name">{ user.roles[type].companyName }</span>
-										}
-										{
-											(type !== 'merchant') &&
 											<span className="Delegate__Item_name">{`${user.roles[type].firstName} ${user.roles[type].lastName}`}</span>
-										}
 										</Cell>
 										<Cell col={3} className="Delegate__Item_subcontainer">
 											<span className="Delegate__Item_email">{user.email}</span>

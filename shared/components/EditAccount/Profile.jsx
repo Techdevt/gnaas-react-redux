@@ -30,14 +30,14 @@ export default class Profile extends Component {
 			email: user.email,
 			title: user.roles[type].title,
 			gender: user.roles[type].gender,
-			companyName: user.roles[type].companyName,
+			affiliatedInstitution: user.roles[type].affiliatedInstitution,
+			residingCountry: user.roles[type].residingCountry,
 			password: '******',
 			permissions: user.roles[type].permissions,
 			roles: user.roles[type].roles,
 			modalIsOpen: false
 		};
 		this.currValues = Object.assign({}, this.state);
-		this.possibleRoles = ['Customer Service', 'Inventory Management'];
 		this.adminPermissions = ['adminAccounts', 'userAccounts'];
 	}
 
@@ -99,22 +99,6 @@ export default class Profile extends Component {
 		});
 		return this.setState({
 			permissions: [...this.state.permissions.slice(0, found), ...this.state.permissions.slice(found + 1)]
-		})
-	};
-
-	roleTicked = (evt) => {
-		return this.setState({
-			roles: [...this.state.roles, {name: evt.target.name, permit: true}]
-		});
-	};
-
-	roleRemoved = (evt) => {
-		const roleName = evt.target.id;
-		const found = this.state.roles.findIndex((role) => {
-			return role.name === roleName;
-		});
-		return this.setState({
-			roles: [...this.state.roles.slice(0, found), ...this.state.roles.slice(found + 1)]
 		})
 	};
 
@@ -192,7 +176,6 @@ export default class Profile extends Component {
 	render() {
 		const { type, user, checks, currUserPermissions, actionResult, message, actionSuccess, authSuccess } = this.props;
 		const passedAvatar = user.roles[type].avatarUrl[1] || user.roles[type].avatarUrl[0];
-		const merchantAvatar = user.roles[type].avatarUrl[2] || user.roles[type].avatarUrl[0];
 
 		return (
 			<div>
@@ -206,7 +189,7 @@ export default class Profile extends Component {
 				} message={message || actionResult} isOpen={true}/>
 			}
 			{
-				(type === 'shopper') &&
+				(type === 'student') &&
 				<div className="DashContent__inner">
 		    		<Cell className="Settings__main" col={8} phone={4} tablet={8}>
 		    			<h2 className="dash_title">Basic Info</h2>
@@ -264,7 +247,7 @@ export default class Profile extends Component {
 		    	</div>
 			}
 			{
-				(type === 'merchant') &&
+				(type === 'alumni') &&
 				<div className="DashContent__inner">
 		    		<Cell className="Settings__main" col={8} phone={4} tablet={8}>
 		    			<h2 className="dash_title">Basic Info</h2>
@@ -279,8 +262,19 @@ export default class Profile extends Component {
 		    						</div>
 		    					</div>
 		    					<div className="inner-div">
-			    						<h2 className="dash_title"> Company Name</h2>
-			    						<AutosizeInput type="text" name="companyName" value={this.state.companyName} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
+		    						<h2 className="dash_title">Name</h2>
+		    						<AutosizeInput type="text" name="firstName" value={this.state.firstName} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
+		    						<AutosizeInput type="text" name="lastName" value={this.state.lastName} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
+		    					</div>
+		    				</div>
+		    				<div>
+		    					<div className="inner-div">
+			    						<h2 className="dash_title">Affiliated Institution</h2>
+			    						<AutosizeInput type="text" name="affiliatedInstitution" value={this.state.affiliatedInstitution} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
+			    				</div>
+			    				<div className="inner-div">
+			    						<h2 className="dash_title">Resident Country</h2>
+			    						<AutosizeInput type="text" name="residingCountry" value={this.state.residingCountry} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
 			    				</div>
 		    				</div>
 		    				<div>
@@ -309,89 +303,6 @@ export default class Profile extends Component {
 		    			}}/></Button>
 		    		</Cell>
 		    	</div>
-			}
-			{
-				(type === 'delegate') &&
-				<div className="DashContent__inner">
-				    		<Cell className="Settings__main" col={10} phone={4} tablet={8}>
-				    			<h2 className="dash_title">Delegate Details</h2>
-				    			<div className="Settings__main--big">
-				    				<div>
-				    					<div className="inner-div">
-				    						<h2 className="dash_title">Title</h2>
-				    						<AutosizeInput type="text" name="title" value={this.state.title} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-				    					</div>
-				    					<div className="inner-div">
-				    						<h2 className="dash_title">Name</h2>
-				    						<AutosizeInput type="text" name="firstName" value={this.state.firstName} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-				    						<AutosizeInput type="text" name="lastName" value={this.state.lastName} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-				    					</div>
-				    				</div>
-				    				<div>
-				    					<div className="inner-div">
-				    						<h2 className="dash_title">Username</h2>
-				    						<AutosizeInput type="text" name="username" value={this.state.username} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-				    					</div>
-				    					<div className="inner-div">
-				    						<h2 className="dash_title">Email Id</h2>
-				    						<AutosizeInput type="email" name="email" value={this.state.email} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-				    					</div>
-				    				</div>
-			    					{
-			    						(checks.isAccountDelegate || this.hasPermission('userAccounts', JSON.parse(JSON.stringify(currUserPermissions)))) &&
-			    						<div>
-				    						<div className="inner-div">
-					    						<h2 className="dash_title">Password</h2>
-					    						<AutosizeInput type="password" name="password" value={this.state.password} onChange={this.onFieldChange} readOnly={true} onClick={this.onPasswordClick}/>
-					    					</div>
-				    					</div>
-			    					}
-			    					{
-			    						(checks.isAccountDelegate || this.hasPermission('userAccounts', JSON.parse(JSON.stringify(currUserPermissions)))) &&
-					    				<div>
-					    					<div className="inner-div Roles">
-					    						<h2 className="dash_title">Roles</h2>
-					    						<div className="Role_Add" style={{
-					    							display: (this.possibleRoles.length === this.state.roles.length) ? 'none' : 'block'
-					    						}}>
-						    						<div className="Role_Select">
-						    							<label>Add Role</label>
-						    							{
-						    								this.possibleRoles.filter((pRole) => {
-						    									const isEqual = !!this.state.roles.find((element) => {
-						    										return pRole === element.name
-						    									});
-						    									return !isEqual;
-						    								}).map((role, index) => {
-						    									return (
-						    										<Checkbox key={index} name={role} label={role} ripple onChange={this.roleTicked}/>
-						    									);
-						    								})
-						    							}
-						    							<hr />
-						    						</div>
-					    						</div>
-					    						<ul className="Role_List" ref="roles">
-						    						{
-						    							this.state.roles.map((role, index) => {
-						    								return (
-						    									<li key={index} className="Role_Item">
-						    										<Switch id={role.name} key={index} checked={role.permit} onChange={this.roleRemoved}>{role.name}</Switch>
-						    									</li>
-						    								);
-						    							})
-						    						}
-					    						</ul>
-					    					</div>
-					    				</div>
-				    				}
-				    			</div>
-				    			<Button raised accent className="Settings__action-btn" onClick={this.handleSubmit}>Update Delegate 
-				    			<Spinner singleColor={true} style={{
-				    				display: (this.props.isWaiting || this.props.actionWaiting) ? 'inline-block' : 'none'
-				    			}}/></Button>
-				    		</Cell>
-				    	</div>
 			}
 			{
 				( type === 'admin' ) &&

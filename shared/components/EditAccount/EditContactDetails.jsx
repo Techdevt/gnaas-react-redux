@@ -22,8 +22,6 @@ export default class ContactDetails extends Component {
 			homePhone: user.roles[type].homePhone,
 			phone: user.roles[type].phone,
 			location: user.location,
-			state: user.state,
-			postCode: user.postCode,
 			address: user.address
 		};
 
@@ -152,88 +150,63 @@ export default class ContactDetails extends Component {
 					}
 				} message={message || actionResult} isOpen={true}/>
 			}
-			{
-				<div className="DashContent__inner">
-		    		<Cell className="Settings__main" col={8} phone={4} tablet={8}>
-		    			<h2 className="dash_title">Contact Information</h2>
-		    			<div className="Settings__main--big">
-		    				<div>
-		    					<div className="inner-div">
-		    						<h2 className="dash_title">Postcode</h2>
-		    						<AutosizeInput type="text" name="postCode" value={this.state.postCode} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-		    					</div>
-		    					<div className="inner-div">
-		    						<h2 className="dash_title">State</h2>
-		    						<AutosizeInput type="text" name="state" value={this.state.state} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-		    					</div>
-		    				</div>
-		    				<div>
-		    					<div className="inner-div">
-		    						<h2 className="dash_title">Location</h2>
-		    						<AutosizeInput type="text" name="location" value={this.state.location} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-		    					</div>
-		    				</div>
+			<div className="DashContent__inner">
+	    		<Cell className="Settings__main" col={8} phone={4} tablet={8}>
+	    			<h2 className="dash_title">Contact Information</h2>
+	    			<div className="Settings__main--big">
+	    				<div>
+	    					<div className="inner-div">
+	    						<h2 className="dash_title">Location</h2>
+	    						<AutosizeInput type="text" name="location" value={this.state.location} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
+	    					</div>
+	    				</div>
+	    				
+    					<div>
+	    					<div className="inner-div">
+	    						<h2 className="dash_title">Mobile No</h2>
+	    						<AutosizeInput type="text" name="phone" value={this.state.phone} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
+	    					</div>
+	    					<div className="inner-div">
+	    						<h2 className="dash_title">Telephone No</h2>
+	    						<AutosizeInput type="text" name="homePhone" value={this.state.homePhone} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
+	    					</div>
+    					</div>
 		    				
-			    				{
-			    					(type === 'shopper') &&
-			    					<div>
-				    					<div className="inner-div">
-				    						<h2 className="dash_title">Mobile No</h2>
-				    						<AutosizeInput type="text" name="homePhone" value={this.state.homePhone} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-				    					</div>
-				    					<div className="inner-div">
-				    						<h2 className="dash_title">Telephone No</h2>
-				    						<AutosizeInput type="text" name="phone" value={this.state.phone} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-				    					</div>
-			    					</div>
-			    				}
-
-			    				{
-			    					(type === 'merchant') &&
-			    					<div>
-				    					<div className="inner-div">
-				    						<h2 className="dash_title">Telephone No</h2>
-				    						<AutosizeInput type="text" name="phone" value={this.state.phone} onChange={this.onFieldChange} readOnly={true} onClick={this.onInputClick}/>
-				    					</div>
-			    					</div>
-			    				}
-		    					
-		    				<div>
-		    					<div className="inner-div Addresses">
-		    						<h2 className="dash_title">Addresses <IconButton raised ripple className="Addresses_Add" name="add" onClick={this.handleAddressAdd}/></h2>
-		    						<ul className="Address_List" ref="addresses">
-			    						{
-			    							this.state.address.map((item, index) => {
-			    								return (
-			    									<li key={index}>
-			    										<AutosizeInput type="text" 
-			    										name="address"
-			    										value={this.state.address[index]} 
-			    										onChange={this.onFieldChange} 
-			    										id={index}
-			    										readOnly={true}
-			    										onClick={this.onInputClick}/>
-			    										<div className="actions" style={{
-			    											display: (item !== '') ? 'inline-block' : 'none'
-			    										}}>
-				    										<IconButton name="edit" raised ripple onClick={this.handleAddressEdit.bind(this, index)}/>
-				    										<IconButton name="cancel" raised ripple onClick={this.handleAddressDelete.bind(this, index)}/>
-			    										</div>
-			    									</li>
-			    								);
-			    							})
-			    						}
-		    						</ul>
-		    					</div>
-		    				</div>
-		    			</div>
-		    			<Button raised accent className="Settings__action-btn" onClick={this.handleSubmit}>Update Contact
-		    			<Spinner singleColor={true} style={{
-		    				display: (this.props.isWaiting || this.props.actionWaiting) ? 'inline-block' : 'none'
-		    			}}/></Button>
-		    		</Cell>
-		    	</div>
-			}
+	    				<div>
+	    					<div className="inner-div Addresses">
+	    						<h2 className="dash_title">Addresses <IconButton raised ripple className="Addresses_Add" name="add" onClick={this.handleAddressAdd}/></h2>
+	    						<ul className="Address_List" ref="addresses">
+		    						{
+		    							this.state.address.map((item, index) => {
+		    								return (
+		    									<li key={index}>
+		    										<AutosizeInput type="text" 
+		    										name="address"
+		    										value={this.state.address[index]} 
+		    										onChange={this.onFieldChange} 
+		    										id={index}
+		    										readOnly={true}
+		    										onClick={this.onInputClick}/>
+		    										<div className="actions" style={{
+		    											display: (item !== '') ? 'inline-block' : 'none'
+		    										}}>
+			    										<IconButton name="edit" raised ripple onClick={this.handleAddressEdit.bind(this, index)}/>
+			    										<IconButton name="cancel" raised ripple onClick={this.handleAddressDelete.bind(this, index)}/>
+		    										</div>
+		    									</li>
+		    								);
+		    							})
+		    						}
+	    						</ul>
+	    					</div>
+	    				</div>
+	    			</div>
+	    			<Button raised accent className="Settings__action-btn" onClick={this.handleSubmit}>Update Contact
+	    			<Spinner singleColor={true} style={{
+	    				display: (this.props.isWaiting || this.props.actionWaiting) ? 'inline-block' : 'none'
+	    			}}/></Button>
+	    		</Cell>
+	    	</div>
 		</div>	
 		);
 	}
