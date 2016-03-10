@@ -72,6 +72,7 @@ export function SignUp(req, res) {
     let userModel = req.body;
     return createUser(userModel);
 
+    console.log(userModel);
     function createUser(userObject) {
         validate(userModel).then(function(userObject) {
             duplicateUsernameCheck(userObject).then(function(userObject) {
@@ -192,7 +193,8 @@ export function toTitleCase(str) {
 }
 
 function handleError(res, err) {
-    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err.toString());
+    console.log(err);
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
 }
 
 export function fileHelper(images, dimension, userId) {

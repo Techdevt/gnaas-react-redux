@@ -61,6 +61,7 @@ class Profile extends Component {
 	deleteImageClicked = (evt) => {
 		const { dispatch } = this.props;
 		dispatch(deleteImage());
+		this.props.unsetDirty();
 	};
 
 	handleFiles = (evt) => {

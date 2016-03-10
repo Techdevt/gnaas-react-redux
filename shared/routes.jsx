@@ -20,6 +20,9 @@ import EditUser from 'components/EditUser';
 import EditProfile from 'components/EditAccount/Profile';
 import EditContactDetails from 'components/EditAccount/EditContactDetails';
 import Post from 'components/Post';
+import Editor from 'components/Post/Editor';
+import PostSettings from 'components/Post/Settings';
+import PostImages from 'components/Post/Images';
 
 if(process.env.BROWSER) {
 	require('react-mdl/extra/material');
@@ -48,7 +51,11 @@ export default (
         <Route name="Edit Profile" path="profile" component={EditProfile}/>
         <Route name="Contact Details" path="contact-details" component={EditContactDetails}/>
       </Route>
-      <Route name="Post" path="post" component={Post} />
+      <Route name="Post" component={requireAuthentication(Post, 'admin')} path="post">
+          <Route name="Editor" component={Editor} path="editor"/>
+          <Route name="Post Settings" component={PostSettings} path="settings"/>
+          <Route name="Attach Images" component={PostImages} path="images"/>
+      </Route>
     </Route>
   </Route>
 );
