@@ -199,7 +199,7 @@ function handleError(res, err) {
 
 export function fileHelper(images, dimension, userId) {
     let itemArray;
-    if (!images.isArray) {
+    if (!Array.isArray(images)) {
         itemArray = [images];
     } else {
         itemArray = images;
@@ -210,32 +210,31 @@ export function fileHelper(images, dimension, userId) {
     return new Promise(function(resolve, reject) {
         ImageHandler.execute(itemArray, dimension).then(function(result) {
             const fileHandler = new FileUtils();
+            const promiseArray = [];
             //if typeof result is array we would need to unlink the main file too and then unlink the rest
-            result.forEach(function(item) {
-                if (!Array.isArray(item)) {
-                    const sourceFile = item.path;
-                    //use path.join
-                    const destFile = path.join(appRoot, `/server/uploads/${userId}/${item.name}`);
-                    fileHandler.move(sourceFile, destFile).then(function(result) {
-                        resolve([destFile]);
-                    });
-                } else {
-                    let promises = [];
-                    item.forEach(function(i) {
-                        promises.push(function(image) {
-                            const sourceFile = image.path;
-                            const destFile = path.join(appRoot, `/server/uploads/${userId}/${image.name}`);
-                            return fileHandler.move(sourceFile, destFile);
-                        }(i));
-                    });
-
-                    Promise.all(promises).then(function(results) {
-                        resolve(results);
-                    }, function(err) {
-                        reject(err);
-                    });
-
-                }
+            result.forEach((item) => {
+                    if(!Array.isArray(item)) {
+                        const sourceFile = item.path;
+                        //use path.join
+                        const destFile = path.join(appRoot, `/server/uploads/${userId}/${item.name}`);
+                        promiseArray.push(function() {
+                            return fileHandler.move(sourceFile, destFile)
+                        }());
+                    } else {
+                        item.forEach(function(i) {
+                            promiseArray.push(function(image) {
+                                const sourceFile = image.path;
+                                const destFile = path.join(appRoot, `/server/uploads/${userId}/${image.name}`);
+                                return fileHandler.move(sourceFile, destFile);
+                            }(i));
+                        });
+                    }
+            });
+            
+            Promise.all(promiseArray).then(function(results) {
+                resolve(results);
+            }, function(err) {
+                reject(err);
             });
         }, function(err) {
             reject(err);

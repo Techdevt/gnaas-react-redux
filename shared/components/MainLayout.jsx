@@ -26,7 +26,7 @@ export default class MainLayout extends Component {
                     </Navigation>
                 </Drawer>
 
-                <div className="Content grid">
+                <div className="">
                     {this.props.children}
                 </div>
                 <Footer/>

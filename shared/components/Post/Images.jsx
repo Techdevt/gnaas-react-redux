@@ -15,9 +15,19 @@ export default class Images extends Component {
 	};
 
 	imageChecked = (index, evt) => {
-		const { history } = this.props;
-		history.push('/dashboard/post');
-		this.props.insertImage(index);
+		const { history, location } = this.props;
+		const insertAt = location.query.iat;
+		const headerRef = location.query.ref;
+
+		if(!(insertAt || headerRef))return;
+
+		if(insertAt) {
+			history.push('/dashboard/post');
+			return this.props.insertImage(index, insertAt);
+		}
+		
+		history.push('/dashboard/post/settings');
+		return this.props.addHeaderImage(index);
 	};
 
 	render() {

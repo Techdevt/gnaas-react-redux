@@ -42,3 +42,9 @@ Promise.prototype.always = function(onResolveOrReject) {
       onResolveOrReject(reason);
     });
 };
+
+String.prototype.insert = function(what, index) {
+    return index > 0
+        ? this.replace(new RegExp('.{' + index + '}'), '$&' + what)
+        : what + this;
+};

@@ -7,62 +7,53 @@ export default class Editor extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			rows: 10,
 			width: Math.floor(window.innerWidth / 2)
 		};
 	}
 
 	componentDidMount() {
-		const rows = this.getRows();
-		const width = this.getWidth();
 		this.setState({
-			...this.state,
-			rows: rows,
-			width: width
+			...this.state
 		});
-		window.addEventListener('resize', this.reCalculate);
 	}
 
-	componentDidUpdate() {
-		const { markup } = this.props;
+	componentDidUpdate(prevProps, prevState) {
+		const { content } = this.props;
 		const renderedContainer = ReactDOM.findDOMNode(this.refs['rendered']);
 		const converter = new showdown.Converter();
-      	renderedContainer.innerHTML = converter.makeHtml(markup);
+      	renderedContainer.innerHTML = converter.makeHtml(content);
 	}
 
-	reCalculate = () => {
-		this.setState({
-			rows: this.getRows(),
-			width: this.getWidth()
-		});
-	};
-
-	getRows = () => {
-		return Math.floor((parseInt(getComputedStyle
-						(document.querySelector('.EditorContainer'))
-						.getPropertyValue('height')
-						.replace('px', ""), 10) - 35 ) / 26);
+	getHeight = () => {
+		const container = document.querySelector('.Editor__Rendered');
+		let rows = Math.ceil((window.innerHeight - 99) / 26);
+		// if(container) {
+		// 	rows = Math.ceil(parseInt(getComputedStyle(container)
+		// 				.getPropertyValue('height')
+		// 				.replace('px', ""), 10) / 24);
+		// }
+		
+		return rows;
 	};
 
 	getWidth = () => {
 		return Math.floor(parseInt(getComputedStyle
 						(document.querySelector('.EditorContainer'))
 						.getPropertyValue('width')
-						.replace('px', ""), 10) / 2);	
+						.replace('px', ""), 10) / 2);
 	};
 
 	render() {
-		const { rows, width } = this.state;
-		const { markup, markupChanged } = this.props;
-
+		const { width } = this.state;
+		const { content, contentChanged, rows } = this.props;
 		return (
 			<div style={{display: 'flex'}}>
 				<Content className="Editor" style={{width: `${width}px`}}>
 					<Textfield
-					    onChange={ markupChanged.bind(this) }
+					    onChange={ contentChanged.bind(this) }
 					    label="Share something..."
-					    rows={rows}
-					    value={markup}
+					    rows={ rows }
+					    value={content}
 					    className="Editor__TextField"
 					    style={{width: '100%'}}
 					/>

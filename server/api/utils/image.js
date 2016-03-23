@@ -10,7 +10,7 @@ export default class ImageProcessor {
         if (images.length) {
             let promises = [];
 
-            _.each(images, function(image) {
+            _.each(images, function(image, index) {
                 promises.push(function(image) {
                     const type = image.mimetype.split('/')[1];
                     const path = image.path;

@@ -9,6 +9,7 @@ import multer from 'multer';
 import path from 'path';
 import config from './defaults';
 import ImageUtils from '../server/api/utils/image';
+import { createPost, getPosts, queryDrafts } from '../server/api/post';
 
 let storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -21,7 +22,7 @@ let storage = multer.diskStorage({
 
 let limits = {
     fieldSize: 52428800
-}; 
+};
 
 const upload = multer({ storage: storage, limits: limits });
 
@@ -112,5 +113,43 @@ export default function(app) {
             }
             res.status(httpStatus.OK).send(users);
         });
+    });
+
+    app.post('/post', Auth, upload.any(), function(req, res) {
+        let props = { ...req.body };
+        if(req.files.length) {
+            props.headerImage = req.files.find((item, index) => {
+                if (item.fieldname === 'headerImage') {
+                    req.files = [ ...req.files.splice(0, index), ...req.files.splice(index + 1) ];
+                    return true;
+                }
+            }) || '';
+        }
+        createPost(req.files, req.user._id, props)
+            .then((result) => {
+                res.status(httpStatus.OK).send({message: 'post created', post: result});
+            }, (err) => {
+                console.log(err);
+                res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err)
+            });
+    });
+
+    app.get('/post', function(req, res) {
+        getPosts().then((posts) => {
+            res.status(httpStatus.OK).send(posts);
+        }, err => httpStatus.INTERNAL_SERVER_ERROR.send(err));
+    });
+
+    app.get('/drafts', function(req, res) {
+        queryDrafts().then((drafts) => {
+            res.status(httpStatus.OK).send(drafts);
+        }, err => httpStatus.INTERNAL_SERVER_ERROR.send(err));
+    });
+
+    app.get('/posts', function(req, res) {
+        //query to get both true or false
+        getPosts({ published: {$in: [true, false]} }).then((posts) => {
+            res.status(httpStatus.OK).send(posts);
+        }, err => httpStatus.INTERNAL_SERVER_ERROR.send(err));
     });
 }

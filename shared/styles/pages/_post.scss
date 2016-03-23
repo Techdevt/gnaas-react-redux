@@ -1,11 +1,15 @@
-    %textarea {
+%textarea {
     font-size: 16px;
     font-family: $font-family--primary;
     font-weight: $font-weight--medium;
     line-height: 1.5em;
-    color: #dcdccc;
     border-bottom-color: #333333;
     resize: none;
+    color: #dcdccc;
+}
+
+.Posts {
+    background: #fafafa;
 }
 
 .EditorContainer {
@@ -18,10 +22,15 @@
         border-right: 2px dashed #333333;
         padding: 0 20px;
         .Editor__TextField {
+        	overflow: hidden;
             .mdl-textfield__input {
                 @extend %textarea;
             }
         }
+    }
+    .notification-bar {
+        z-index: 100000 !important;
+        text-align: center;
     }
     .EditorContainer__Header {
         height: 35px;
@@ -32,17 +41,27 @@
             display: inline-block;
             position: absolute;
             right: 10px;
-            color: #333333;
+        }
+        .material-icons {
+        	color: #333333;
         }
     }
     .Editor__Rendered {
         padding: 20px;
-        display: flex;
-        flex-wrap: wrap;
+        line-height: 1.5em;
+        img {
+        	max-width: 200px;
+        	height: auto;
+        }
+        color: #dcdccc;
+        p, span, h1, h2, h3, h4, h5, h6, blockquote, li, pre {
+        	color: #dcdccc;
+        }
+
         p {
-            color: #dcdccc;
-            font-size: 16px;
-            text-overflow: ellipsis;
+            strong {
+                font-weight: $font-weight--bold;
+            }
         }
     }
     .PostSettings {
